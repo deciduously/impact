@@ -1,0 +1,9 @@
+[package]
+name = "impact"
+version = "0.1.0"
+authors = ["deciduously <github@deciduously.com>"]
+
+[dependencies]
+
+stdweb = "*"
+yew = "*"

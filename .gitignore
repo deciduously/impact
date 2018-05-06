@@ -1,0 +1,8 @@
+/node_modules
+/css
+/target
+**/*.rs.bk
+/out
+static/*.css
+.#*
+.vscode*
