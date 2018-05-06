@@ -1,15 +1,21 @@
+#![feature(trait_alias)]
+
 extern crate stdweb;
 #[macro_use]
 extern crate yew;
 
 mod components;
+mod types;
 
-use components::container::Container;
+use components::resource_container::ResourceContainer;
+use std::collections::HashMap;
+use types::Resource;
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
 pub struct Model {
     tick: u64,
+    resource_values: HashMap<Resource, u32>,
 }
 
 pub enum Msg {
@@ -25,7 +31,10 @@ where
     type Properties = ();
 
     fn create(_: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
-        Model { tick: 0 }
+        Model {
+            tick: 0,
+            resource_values: HashMap::new(),
+        }
     }
 
     fn update(&mut self, msg: Self::Msg, env: &mut Env<CTX, Self>) -> ShouldRender {
@@ -52,8 +61,8 @@ where
             <div class="impact",>
                 <div class="header",>{"IMPACT"}</div>
                 <div class="body",>
-                    <p>{ &format!("Tick: {}", self.tick) }</p>
-                    <Container: title="Resources" ,/>
+                    <p>{&format!("Tick: {}", self.tick)}</p>
+                    <ResourceContainer: resources=&self.resource_values,/>
                 </div>
             </div>
         }

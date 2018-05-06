@@ -1,8 +1,11 @@
+use types::*;
+use std::collections::HashMap;
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
-pub struct Container {
+pub struct ResourceContainer {
     title: String,
+    resources: Resources,
 }
 
 pub enum Msg {
@@ -10,18 +13,18 @@ pub enum Msg {
 
 #[derive(PartialEq, Clone)]
 pub struct Props {
-    pub title: String,
+    pub resources: Resources,
 }
 
 impl Default for Props {
     fn default() -> Self {
         Props {
-            title: "DefaultContainerComponent".into(),
+            resources: HashMap::new(),
         }
     }
 }
 
-impl<CTX> Component<CTX> for Container
+impl<CTX> Component<CTX> for ResourceContainer
 where
     CTX: AsMut<ConsoleService>,
 {
@@ -29,7 +32,10 @@ where
     type Properties = Props;
 
     fn create(props: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
-        Container { title: props.title }
+        ResourceContainer {
+            title: "Resources".to_string(),
+            resources: props.resources,
+        }
     }
 
     fn update(&mut self, _msg: Self::Msg, _env: &mut Env<CTX, Self>) -> ShouldRender {
@@ -37,14 +43,16 @@ where
     }
 }
 
-impl<CTX> Renderable<CTX, Container> for Container
+impl<CTX> Renderable<CTX, ResourceContainer> for ResourceContainer
 where
     CTX: AsMut<ConsoleService> + 'static,
 {
+    // TODO individual Resources-ids and inner/chidren ids after scroller
     fn view(&self) -> Html<CTX, Self> {
         html! {
             <div class="container",>
                 <div class="title",>{&self.title}</div>
+                <div class="scroller",>{&format!("{:?}", self.resources)}</div>
             </div>
         }
     }
