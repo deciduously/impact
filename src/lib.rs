@@ -42,12 +42,15 @@ where
         match msg {
             Msg::PerformAction(action) => match action {
                 Action::EndTurn => {
+                    // TODO no EndTurn action - every other action ticks forward a given amount
                     self.tick += 1;
                     env.as_mut().log("end turn");
                     true
                 }
                 Action::AddResourceValue(resource, delta) => {
-                    self.resource_values.entry(resource).or_insert(delta);
+                    // TODO add min/maxes, and check here
+                    let r = self.resource_values.entry(resource).or_insert(0);
+                    *r += delta;
                     env.as_mut()
                         .log(&format!("adding {} {:?}", delta, resource));
                     true
