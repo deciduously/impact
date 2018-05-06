@@ -1,5 +1,3 @@
-#![feature(trait_alias)]
-
 extern crate stdweb;
 #[macro_use]
 extern crate yew;
@@ -7,7 +5,7 @@ extern crate yew;
 mod components;
 mod types;
 
-use components::resource_container::ResourceContainer;
+use components::{control_container::ControlContainer, resource_container::ResourceContainer};
 use std::collections::HashMap;
 use types::Resource;
 use yew::prelude::*;
@@ -63,6 +61,7 @@ where
                 <div class="body",>
                     <p>{&format!("Tick: {}", self.tick)}</p>
                     <ResourceContainer: resources=&self.resource_values,/>
+                    <ControlContainer: />
                 </div>
             </div>
         }
