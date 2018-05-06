@@ -9,16 +9,16 @@
         display: flex;
         flex-direction: column;
         overflow: hidden;
-    }
 
-    >.title {
-        border-bottom: solid 1px #000;
-        font-weight: bold;
-        text-align: center;
-    }
+        >.title {
+            border-bottom: solid 1px #000;
+            font-weight: bold;
+            text-align: center;
+        }
 
-    >.scroller {
-        overflow: auto;
+        >.scroller {
+            overflow: auto;
+        }
     }
 
     .header {

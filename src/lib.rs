@@ -2,7 +2,9 @@ extern crate stdweb;
 #[macro_use]
 extern crate yew;
 
-//use stdweb::web::Date;
+mod components;
+
+use components::container::Container;
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
@@ -51,23 +53,14 @@ where
                 <div class="header",>{"IMPACT"}</div>
                 <div class="body",>
                     <p>{ &format!("Tick: {}", self.tick) }</p>
-                    <div class="container",>
-                        <div class="title",>{"Resources: "}</div>
-                    </div>
-                    <div class="container",>
-                        <div class="title",>{"Actions: "}</div>
-                    </div>
-                    <div class="container",>
-                        <div class="title",>{"Inventory: "}</div>
-                    </div>
-                    <div class="container",>
-                        <div class="title",>{"Map: "}</div>
-                    </div>
-                    <div class="container",>
-                        <div class="title",>{"Messages: "}</div>
-                    </div>
+                    <Container: title="Resources" ,/>
                 </div>
             </div>
         }
     }
 }
+// Resources
+// Actions (global, inner map tiles will have thier own buttons)
+// Inventory
+// Map (where MOST of the app lives)
+// Messages

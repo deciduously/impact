@@ -1,5 +1,5 @@
-extern crate yew;
 extern crate impact;
+extern crate yew;
 
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
