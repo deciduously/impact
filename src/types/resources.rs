@@ -5,4 +5,4 @@ pub enum Resource {
     Oxygen,
 }
 
-pub type Resources = HashMap<Resource, i32>;
+pub type Resources = HashMap<Resource, f64>;

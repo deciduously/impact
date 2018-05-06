@@ -40,18 +40,19 @@ where
 
     fn update(&mut self, msg: Self::Msg, env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
+            // could this be moved into types/action as in impl
             Msg::PerformAction(action) => {
                 use types::actions::*;
                 match action {
                     Action::AddResourceValue(resource, delta) => {
                         // TODO add min/maxes, and check here
-                        let r = self.resource_values.entry(resource).or_insert(0);
-                        *r += delta;
+                        let r = self.resource_values.entry(resource).or_insert(0.0);
+                        *r += delta as f64;
                         env.as_mut()
                             .log(&format!("adding {} {:?}", delta, resource));
                     }
                     Action::SetResourceValue(resource, amt) => {
-                        self.resource_values.insert(resource, 100);
+                        self.resource_values.insert(resource, amt as f64);
                         env.as_mut()
                             .log(&format!("setting {:?} to {}", resource, amt));
                     }
