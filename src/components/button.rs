@@ -1,28 +1,31 @@
-use components::button::Button;
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
-pub struct ControlContainer {
+pub struct Button {
     title: String,
     onsignal: Option<Callback<()>>,
 }
 
 pub enum Msg {
-    EndTurn,
+    Clicked,
 }
 
 #[derive(PartialEq, Clone)]
 pub struct Props {
+    pub title: String,
     pub onsignal: Option<Callback<()>>,
 }
 
 impl Default for Props {
     fn default() -> Self {
-        Props { onsignal: None }
+        Props {
+            title: "Send Signal".into(),
+            onsignal: None,
+        }
     }
 }
 
-impl<CTX> Component<CTX> for ControlContainer
+impl<CTX> Component<CTX> for Button
 where
     CTX: AsMut<ConsoleService>,
 {
@@ -30,15 +33,15 @@ where
     type Properties = Props;
 
     fn create(props: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
-        ControlContainer {
-            title: "Control".to_string(),
+        Button {
+            title: props.title,
             onsignal: props.onsignal,
         }
     }
 
     fn update(&mut self, msg: Self::Msg, _env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
-            Msg::EndTurn => {
+            Msg::Clicked => {
                 if let Some(ref mut callback) = self.onsignal {
                     callback.emit(());
                 }
@@ -48,24 +51,19 @@ where
     }
 
     fn change(&mut self, props: Self::Properties, _: &mut Env<CTX, Self>) -> ShouldRender {
+        self.title = props.title;
         self.onsignal = props.onsignal;
         true
     }
 }
 
-impl<CTX> Renderable<CTX, ControlContainer> for ControlContainer
+impl<CTX> Renderable<CTX, Button> for Button
 where
     CTX: AsMut<ConsoleService> + 'static,
 {
-    // TODO individual Resources-ids and inner/chidren ids after scroller
     fn view(&self) -> Html<CTX, Self> {
         html! {
-            <div class="container",>
-                <div class="title",>{&self.title}</div>
-                <div class="scroller",>
-                    <Button: title="End Turn", onsignal=|_| Msg::EndTurn,/>
-                </div>
-            </div>
+            <button onclick=|_| Msg::Clicked,>{&self.title}</button>
         }
     }
 }

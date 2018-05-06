@@ -7,7 +7,7 @@ mod types;
 
 use components::{control_container::ControlContainer, resource_container::ResourceContainer};
 use std::collections::HashMap;
-use types::Resource;
+use types::*;
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
@@ -17,7 +17,7 @@ pub struct Model {
 }
 
 pub enum Msg {
-    TickForward,
+    EndTurn,
     Bulk(Vec<Msg>),
 }
 
@@ -37,9 +37,9 @@ where
 
     fn update(&mut self, msg: Self::Msg, env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
-            Msg::TickForward => {
+            Msg::EndTurn => {
                 self.tick += 1;
-                env.as_mut().log("increment time");
+                env.as_mut().log("end turn");
             }
             Msg::Bulk(list) => for msg in list {
                 self.update(msg, env);
@@ -61,7 +61,7 @@ where
                 <div class="body",>
                     <p>{&format!("Tick: {}", self.tick)}</p>
                     <ResourceContainer: resources=&self.resource_values,/>
-                    <ControlContainer: />
+                    <ControlContainer: onsignal=|_| Msg::EndTurn,/>
                 </div>
             </div>
         }

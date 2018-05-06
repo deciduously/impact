@@ -41,6 +41,11 @@ where
     fn update(&mut self, _msg: Self::Msg, _env: &mut Env<CTX, Self>) -> ShouldRender {
         true
     }
+
+    fn change(&mut self, props: Self::Properties, _: &mut Env<CTX, Self>) -> ShouldRender {
+        self.resources = props.resources;
+        true
+    }
 }
 
 impl<CTX> Renderable<CTX, ResourceContainer> for ResourceContainer
