@@ -6,13 +6,15 @@ It's incremental, but not realtime.
 
 ## Requirements
 
-In development, I'm targeting the `wasm32-unknown-unknown` compiler target, which is currently nightly-only.  Stable should work if you use emscripten/asmjs.
+* Rust nightly - targeting `wasm32-unknown-unknown`.
+* npm/yarn
 
-I use a `package.json` for build scripts/JS-ecosystem deps.  My preferred tool is `yarn`, you can use `npm` as well.  Provided scripts:
+Provided scripts:
 
 * `clean` - Clean build artifacts.
-* `build` - Build a production-ready bundle - useless for now, you can't serve this statically
-* `start` - Start a development server and watch for changes.  Currently runs a release build only.
+* `start` - Start a development server and watch for changes to either Rust or SCSS.
+
+`build` works but isn't terribly useful, it can't be statically served as is.
 
 ## Crates
 
