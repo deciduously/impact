@@ -8,7 +8,7 @@ mod types;
 use components::{control_container::ControlContainer, messages_container::MessagesContainer,
                  resource_container::ResourceContainer};
 use std::collections::HashMap;
-use types::*;
+use types::{Tick, actions::Action, messages::Message, resources::Resources};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
@@ -41,6 +41,7 @@ where
     fn update(&mut self, msg: Self::Msg, env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
             Msg::PerformAction(action) => {
+                use types::actions::*;
                 match action {
                     Action::AddResourceValue(resource, delta) => {
                         // TODO add min/maxes, and check here

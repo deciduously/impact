@@ -1,4 +1,4 @@
-use types::*;
+use types::messages::Message;
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 

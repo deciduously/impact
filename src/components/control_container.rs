@@ -1,4 +1,4 @@
-use types::*;
+use types::{actions::Action, resources::Resource};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
