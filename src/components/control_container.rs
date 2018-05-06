@@ -1,19 +1,24 @@
-use components::button::Button;
+use types::*;
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
+// NOTE TO SELF - there shouldn't be too many buttons here.
+// Most will be tile-specific
+
 pub struct ControlContainer {
     title: String,
-    onsignal: Option<Callback<()>>,
+    onsignal: Option<Callback<Action>>,
 }
 
 pub enum Msg {
     EndTurn,
+    AddOxygen,
+    AddTestMessage,
 }
 
 #[derive(PartialEq, Clone)]
 pub struct Props {
-    pub onsignal: Option<Callback<()>>,
+    pub onsignal: Option<Callback<Action>>,
 }
 
 impl Default for Props {
@@ -40,7 +45,17 @@ where
         match msg {
             Msg::EndTurn => {
                 if let Some(ref mut callback) = self.onsignal {
-                    callback.emit(());
+                    callback.emit(Action::EndTurn);
+                }
+            }
+            Msg::AddOxygen => {
+                if let Some(ref mut callback) = self.onsignal {
+                    callback.emit(Action::AddResourceValue(Resource::Oxygen, 1));
+                }
+            }
+            Msg::AddTestMessage => {
+                if let Some(ref mut callback) = self.onsignal {
+                    callback.emit(Action::AddMessage("A Test Message".to_string()));
                 }
             }
         }
@@ -57,13 +72,14 @@ impl<CTX> Renderable<CTX, ControlContainer> for ControlContainer
 where
     CTX: AsMut<ConsoleService> + 'static,
 {
-    // TODO individual Resources-ids and inner/chidren ids after scroller
     fn view(&self) -> Html<CTX, Self> {
         html! {
             <div class="container",>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>
-                    <Button: title="End Turn", onsignal=|_| Msg::EndTurn,/>
+                    <button onclick=|_| Msg::EndTurn,>{"End Turn"}</button>
+                    <button onclick=|_| Msg::AddOxygen,>{" Add Oxygen" }</button>
+                    <button onclick=|_| Msg::AddTestMessage,>{" Try a Message "}</button>
                 </div>
             </div>
         }

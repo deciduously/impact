@@ -5,19 +5,21 @@ extern crate yew;
 mod components;
 mod types;
 
-use components::{control_container::ControlContainer, resource_container::ResourceContainer};
+use components::{control_container::ControlContainer, messages_container::MessagesContainer,
+                 resource_container::ResourceContainer};
 use std::collections::HashMap;
 use types::*;
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
 pub struct Model {
-    tick: u64,
-    resource_values: HashMap<Resource, u32>,
+    tick: Tick,
+    resource_values: Resources,
+    messages: Vec<Message>,
 }
 
 pub enum Msg {
-    EndTurn,
+    PerformAction(Action),
     Bulk(Vec<Msg>),
 }
 
@@ -32,21 +34,38 @@ where
         Model {
             tick: 0,
             resource_values: HashMap::new(),
+            messages: Vec::new(),
         }
     }
 
     fn update(&mut self, msg: Self::Msg, env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
-            Msg::EndTurn => {
-                self.tick += 1;
-                env.as_mut().log("end turn");
-            }
-            Msg::Bulk(list) => for msg in list {
-                self.update(msg, env);
-                env.as_mut().log("Bulk action");
+            Msg::PerformAction(action) => match action {
+                Action::EndTurn => {
+                    self.tick += 1;
+                    env.as_mut().log("end turn");
+                    true
+                }
+                Action::AddResourceValue(resource, delta) => {
+                    self.resource_values.entry(resource).or_insert(delta);
+                    env.as_mut()
+                        .log(&format!("adding {} {:?}", delta, resource));
+                    true
+                }
+                Action::AddMessage(message) => {
+                    self.messages.push(Message::new(message, self.tick));
+                    env.as_mut().log("adding message");
+                    true
+                }
             },
+            Msg::Bulk(list) => {
+                for msg in list {
+                    self.update(msg, env);
+                    env.as_mut().log("Bulk action");
+                }
+                true
+            }
         }
-        true
     }
 }
 
@@ -61,7 +80,8 @@ where
                 <div class="body",>
                     <p>{&format!("Tick: {}", self.tick)}</p>
                     <ResourceContainer: resources=&self.resource_values,/>
-                    <ControlContainer: onsignal=|_| Msg::EndTurn,/>
+                    <ControlContainer: onsignal=|action| Msg::PerformAction(action),/>
+                    <MessagesContainer: messages=&self.messages,/>
                 </div>
             </div>
         }
