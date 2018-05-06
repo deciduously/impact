@@ -11,7 +11,6 @@ pub struct ControlContainer {
 }
 
 pub enum Msg {
-    EndTurn,
     AddOxygen,
     AddTestMessage,
 }
@@ -43,11 +42,6 @@ where
 
     fn update(&mut self, msg: Self::Msg, _env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
-            Msg::EndTurn => {
-                if let Some(ref mut callback) = self.onsignal {
-                    callback.emit(Action::EndTurn);
-                }
-            }
             Msg::AddOxygen => {
                 if let Some(ref mut callback) = self.onsignal {
                     callback.emit(Action::AddResourceValue(Resource::Oxygen, 1));
@@ -77,7 +71,6 @@ where
             <div class="container",>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>
-                    <button onclick=|_| Msg::EndTurn,>{"End Turn"}</button>
                     <button onclick=|_| Msg::AddOxygen,>{" Add Oxygen" }</button>
                     <button onclick=|_| Msg::AddTestMessage,>{" Try a Message "}</button>
                 </div>

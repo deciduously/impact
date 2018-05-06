@@ -4,7 +4,6 @@ use std::{fmt, collections::HashMap};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Action {
-    EndTurn,
     AddMessage(String),
     //SetBoolFlag(BoolFlag),
     //ClearBoolFlag(BoolFlag),
@@ -39,13 +38,6 @@ pub enum Resource {
 }
 
 pub type Resources = HashMap<Resource, i32>;
-
-// Buttons
-
-#[derive(Debug, Clone, PartialEq, Eq)]
-pub enum Button {
-    EndTurn,
-}
 
 // Time
 pub type Tick = u64;
