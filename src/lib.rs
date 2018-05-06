@@ -49,12 +49,17 @@ where
                         env.as_mut()
                             .log(&format!("adding {} {:?}", delta, resource));
                     }
+                    Action::SetResourceValue(resource, amt) => {
+                        self.resource_values.insert(resource, 100);
+                        env.as_mut()
+                            .log(&format!("setting {:?} to {}", resource, amt));
+                    }
                     Action::AddMessage(message) => {
                         self.messages.push(Message::new(message, self.tick));
                         env.as_mut().log("adding message");
                     }
                 };
-                self.tick += 1;
+                self.tick += 1; // TODO Model::tick() which will apply transformers and then tick fwd
                 true
             }
             Msg::Bulk(list) => {

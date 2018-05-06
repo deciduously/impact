@@ -7,7 +7,7 @@ pub enum Action {
     AddMessage(String),
     //SetBoolFlag(BoolFlag),
     //ClearBoolFlag(BoolFlag),
-    //SetResourceValue(Resource, i32),
+    SetResourceValue(Resource, i32),
     AddResourceValue(Resource, i32),
     //AddIntFlag(IntFlag, i32),
     //SetFloatFlag(FloatFlag),
