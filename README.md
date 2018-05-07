@@ -20,7 +20,7 @@ Provided scripts:
 * `start` - Start a development server on `localhost:8000` and watch for changes to either Rust or SCSS.
 * `prod` - Build a production bundle at `out/` and serve on `localhost:8080`.
 
-Note - the `wasm32-unknown-unknown` target does not currently support debug builds, so the dev server runs a release build of the rust code.  For now, the only differernce with with the production build is the JS/CSS bundling.  The WASM is plenty fast, and this app is plenty simple.
+Note - the `wasm32-unknown-unknown` target does not currently support debug builds, so the dev server runs a release build of the rust code.  For now, the only differernce with with the production build is the output directory, and lack of hot reloading.  Just use `start`.
 
 ## Crates
 

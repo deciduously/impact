@@ -12,7 +12,7 @@ pub struct ControlContainer {
 
 pub enum Msg {
     ActivateOxygen,
-    AddTestMessage,
+    Wait,
 }
 
 #[derive(PartialEq, Clone)]
@@ -48,14 +48,15 @@ where
                     callback.emit(types::Msg::Bulk(vec![
                         types::Msg::PerformAction(Action::SetBoolFlag(BoolFlag::OxygenMonitor)),
                         types::Msg::PerformAction(Action::SetResourceValue(Resource::Oxygen, 100)),
+                        types::Msg::PerformAction(Action::AddMessage(
+                            "Oxygen Monitor Up, 100 available".to_string(),
+                        )),
                     ]));
                 }
             }
-            Msg::AddTestMessage => {
+            Msg::Wait => {
                 if let Some(ref mut callback) = self.onsignal {
-                    callback.emit(types::Msg::PerformAction(Action::AddMessage(
-                        "A Test Message".to_string(),
-                    )));
+                    callback.emit(types::Msg::PerformAction(Action::Noop));
                 }
             }
         }
@@ -77,8 +78,8 @@ where
             <div class="container",>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>
+                    <button onclick=|_| Msg::Wait,>{"Wait 1 second"}</button>
                     <button onclick=|_| Msg::ActivateOxygen,>{"Power Up Oxygen Meter"}</button>
-                    <button onclick=|_| Msg::AddTestMessage,>{" Try a Message "}</button>
                 </div>
             </div>
         }

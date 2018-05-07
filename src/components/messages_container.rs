@@ -60,7 +60,7 @@ where
             <div class="container",>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>
-                    <ul>{ for self.messages.iter().map(view_message) }</ul>
+                    <ul>{ for self.messages.iter().rev().map(view_message) }</ul>
                 </div>
             </div>
         }

@@ -3,6 +3,7 @@ use types::{flags::BoolFlag, messages::Message, resources::Resource};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Action {
+    Noop, // Just wait a tick
     AddMessage(String),
     SetBoolFlag(BoolFlag),
     ClearBoolFlag(BoolFlag),
@@ -16,6 +17,7 @@ impl Action {
     pub fn perform(&self, model: &mut Model) {
         use self::Action::*;
         match self {
+            Noop => {}
             AddResourceValue(resource, delta) => {
                 // TODO add min/maxes, and check here
                 let r = model.resource_values.entry(*resource).or_insert(0.0);
