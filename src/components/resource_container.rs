@@ -1,4 +1,4 @@
-use types::resources::Resources;
+use types::resources::{Resource, Resources};
 use std::collections::HashMap;
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
@@ -54,10 +54,18 @@ where
 {
     // TODO individual Resources-ids and inner/chidren ids after scroller
     fn view(&self) -> Html<CTX, Self> {
+        let view_resource = |resource: (&Resource, &f64)| {
+            html! {
+                <>
+                    <span class="resource-title",>{&format!("{:?}", resource.0)}</span>
+                    <span class="resource-amt",>{resource.1}</span>
+                </>
+            }
+        };
         html! {
             <div class="container",>
                 <div class="title",>{&self.title}</div>
-                <div class="scroller",>{&format!("{:?}", self.resources)}</div>
+                <div class="scroller",>{ for self.resources.iter().map(view_resource) }</div>
             </div>
         }
     }
