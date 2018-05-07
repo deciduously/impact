@@ -7,20 +7,14 @@ mod types;
 
 use components::{control_container::ControlContainer, messages_container::MessagesContainer,
                  resource_container::ResourceContainer};
+use types::{Msg, Tick, messages::Message, resources::Resources};
 use std::collections::HashMap;
-use types::{Tick, actions::Action, messages::Message, resources::Resources};
-use yew::prelude::*;
-use yew::services::console::ConsoleService;
+use yew::{prelude::*, services::console::ConsoleService};
 
 pub struct Model {
-    tick: Tick,
-    resource_values: Resources,
-    messages: Vec<Message>,
-}
-
-pub enum Msg {
-    PerformAction(Action),
-    Bulk(Vec<Msg>),
+    pub tick: Tick,
+    pub resource_values: Resources,
+    pub messages: Vec<Message>,
 }
 
 impl<CTX> Component<CTX> for Model
@@ -40,28 +34,9 @@ where
 
     fn update(&mut self, msg: Self::Msg, env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
-            // could this be moved into types/action as in impl
             Msg::PerformAction(action) => {
-                use types::actions::*;
-                match action {
-                    Action::AddResourceValue(resource, delta) => {
-                        // TODO add min/maxes, and check here
-                        let r = self.resource_values.entry(resource).or_insert(0.0);
-                        *r += delta as f64;
-                        env.as_mut()
-                            .log(&format!("adding {} {:?}", delta, resource));
-                    }
-                    Action::SetResourceValue(resource, amt) => {
-                        self.resource_values.insert(resource, amt as f64);
-                        env.as_mut()
-                            .log(&format!("setting {:?} to {}", resource, amt));
-                    }
-                    Action::AddMessage(message) => {
-                        self.messages.push(Message::new(message, self.tick));
-                        env.as_mut().log("adding message");
-                    }
-                };
-                self.tick += 1; // TODO Model::tick() which will apply transformers and then tick fwd
+                env.as_mut().log(&format!("action: {:?}", action));
+                &action.perform(self);
                 true
             }
             Msg::Bulk(list) => {
@@ -93,8 +68,4 @@ where
         }
     }
 }
-// Resources
-// Actions (global, inner map tiles will have thier own buttons)
-// Inventory
-// Map (where MOST of the app lives)
-// Messages
+// Map/Tiles (where MOST of the app lives)
