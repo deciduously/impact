@@ -7,14 +7,15 @@ mod types;
 
 use components::{control_container::ControlContainer, messages_container::MessagesContainer,
                  resource_container::ResourceContainer};
-use types::{Msg, Tick, messages::Message, resources::Resources};
+use types::{Msg, flags::BoolFlags, messages::Message, resources::Resources, time::Time};
 use std::collections::HashMap;
 use yew::{prelude::*, services::console::ConsoleService};
 
 pub struct Model {
-    pub tick: Tick,
-    pub resource_values: Resources,
-    pub messages: Vec<Message>,
+    time: Time,
+    resource_values: Resources,
+    messages: Vec<Message>,
+    bool_flags: BoolFlags,
 }
 
 impl<CTX> Component<CTX> for Model
@@ -26,9 +27,10 @@ where
 
     fn create(_: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
         Model {
-            tick: 0,
+            time: Time::new(),
             resource_values: HashMap::new(),
             messages: Vec::new(),
+            bool_flags: HashMap::new(),
         }
     }
 
@@ -59,9 +61,9 @@ where
             <div class="impact",>
                 <div class="header",>{"IMPACT"}</div>
                 <div class="body",>
-                    <p>{&format!("Tick: {}", self.tick)}</p>
+                    <span class="time",>{&format!("Time: {}", self.time.clone())}</span>
                     <ResourceContainer: resources=&self.resource_values,/>
-                    <ControlContainer: onsignal=|action| Msg::PerformAction(action),/>
+                    <ControlContainer: onsignal=|msg| msg,/>
                     <MessagesContainer: messages=&self.messages,/>
                 </div>
             </div>

@@ -1,14 +1,18 @@
 use std::fmt;
+use types::time::Time;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Message {
-    time: u64,
+    time: Time,
     content: String,
 }
 
 impl Message {
-    pub fn new(content: String, time: u64) -> Self {
-        Message { content, time }
+    pub fn new(content: String, time: &Time) -> Self {
+        Message {
+            content,
+            time: time.clone(),
+        }
     }
 }
 

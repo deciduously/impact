@@ -1,4 +1,4 @@
-use types::{actions::Action, resources::Resource};
+use types::{self, actions::Action, flags::BoolFlag, resources::Resource};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
@@ -7,18 +7,17 @@ use yew::services::console::ConsoleService;
 
 pub struct ControlContainer {
     title: String,
-    onsignal: Option<Callback<Action>>,
+    onsignal: Option<Callback<types::Msg>>,
 }
 
 pub enum Msg {
-    AddOxygen,
-    FullOxygen,
+    ActivateOxygen,
     AddTestMessage,
 }
 
 #[derive(PartialEq, Clone)]
 pub struct Props {
-    pub onsignal: Option<Callback<Action>>,
+    pub onsignal: Option<Callback<types::Msg>>,
 }
 
 impl Default for Props {
@@ -43,20 +42,20 @@ where
 
     fn update(&mut self, msg: Self::Msg, _env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
-            // TODO this could/should be a macro
-            Msg::AddOxygen => {
+            // TODO this could/should be a macro, or at least abstracted out better
+            Msg::ActivateOxygen => {
                 if let Some(ref mut callback) = self.onsignal {
-                    callback.emit(Action::AddResourceValue(Resource::Oxygen, 1));
-                }
-            }
-            Msg::FullOxygen => {
-                if let Some(ref mut callback) = self.onsignal {
-                    callback.emit(Action::SetResourceValue(Resource::Oxygen, 100));
+                    callback.emit(types::Msg::Bulk(vec![
+                        types::Msg::PerformAction(Action::SetBoolFlag(BoolFlag::OxygenMonitor)),
+                        types::Msg::PerformAction(Action::SetResourceValue(Resource::Oxygen, 100)),
+                    ]));
                 }
             }
             Msg::AddTestMessage => {
                 if let Some(ref mut callback) = self.onsignal {
-                    callback.emit(Action::AddMessage("A Test Message".to_string()));
+                    callback.emit(types::Msg::PerformAction(Action::AddMessage(
+                        "A Test Message".to_string(),
+                    )));
                 }
             }
         }
@@ -78,8 +77,7 @@ where
             <div class="container",>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>
-                    <button onclick=|_| Msg::AddOxygen,>{" Add Oxygen" }</button>
-                    <button onclick=|_| Msg::FullOxygen,>{" Full Oxygen "}</button>
+                    <button onclick=|_| Msg::ActivateOxygen,>{"Power Up Oxygen Meter"}</button>
                     <button onclick=|_| Msg::AddTestMessage,>{" Try a Message "}</button>
                 </div>
             </div>

@@ -1,11 +1,11 @@
-use super::super::Model; // joke
-use types::{messages::Message, resources::Resource};
+use super::super::Model;
+use types::{flags::BoolFlag, messages::Message, resources::Resource};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Action {
     AddMessage(String),
-    //SetBoolFlag(BoolFlag),
-    //ClearBoolFlag(BoolFlag),
+    SetBoolFlag(BoolFlag),
+    ClearBoolFlag(BoolFlag),
     SetResourceValue(Resource, i32),
     AddResourceValue(Resource, i32),
     //AddIntFlag(IntFlag, i32),
@@ -13,22 +13,30 @@ pub enum Action {
 }
 
 impl Action {
-    pub fn perform(self, model: &mut Model) {
+    pub fn perform(&self, model: &mut Model) {
         use self::Action::*;
         match self {
             AddResourceValue(resource, delta) => {
                 // TODO add min/maxes, and check here
-                let r = model.resource_values.entry(resource).or_insert(0.0);
-                *r += delta as f64;
+                let r = model.resource_values.entry(*resource).or_insert(0.0);
+                *r += *delta as f64;
+            }
+            SetBoolFlag(f) => {
+                model.bool_flags.insert(*f, true);
+            }
+            ClearBoolFlag(f) => {
+                model.bool_flags.insert(*f, false);
             }
             SetResourceValue(resource, amt) => {
-                model.resource_values.insert(resource, amt as f64);
+                model.resource_values.insert(*resource, *amt as f64);
             }
             AddMessage(message) => {
-                model.messages.push(Message::new(message, model.tick));
+                model
+                    .messages
+                    .push(Message::new(message.to_string(), &model.time));
             }
         };
-        model.tick += 1; // TODO Model::tick() which will apply transformers and then tick fwd
+        model.time.increment(); // TODO Model::tick() which will apply transformers and then tick fwd
     }
 }
 
