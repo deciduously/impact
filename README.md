@@ -12,9 +12,10 @@ It's incremental, but not realtime.  For now, a second passes each time an Actio
 Provided scripts:
 
 * `clean` - Clean build artifacts.
-* `start` - Start a development server and watch for changes to either Rust or SCSS.
+* `start` - Start a development server on `localhost:8000` and watch for changes to either Rust or SCSS.
+* `prod` - Build a production bundle at `out/` and serve on `localhost:8080`.
 
-`build` works but isn't terribly useful, it can't be statically served as is.
+Note - the `wasm32-unknown-unknown` target does not currently support debug builds, so the dev server runs a release build of the rust code.  For now, the only differernce with with the production build is the JS/CSS bundling.  THe WASM is plenty fast, and this app is plenty simple.
 
 ## Crates
 

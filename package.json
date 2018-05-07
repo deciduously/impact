@@ -8,11 +8,14 @@
   "license": "MIT",
   "scripts": {
     "clean": "cargo clean",
+    "clean:deploy": "rm -rf out/",
     "build:rs": "cargo web deploy --release",
     "build:scss": "node-sass --include-path scss scss/impact.scss css/impact.css",
     "build:css": "postcss --use autoprefixer -o static/impact.css css/impact.css",
     "build:copy": "mkdir out && cp -r target/deploy/* out/",
     "build": "run-s build:rs build:copy",
+    "serve": "serve -p 8080 out/",
+    "prod": "run-s clean:deploy build serve",
     "watch:rs": "cargo web start --release",
     "watch:scss": "nodemon -e scss -x \"yarn build:scss\"",
     "watch:css": "nodemon -e css -x \"yarn build:css\"",
@@ -26,6 +29,7 @@
     "nodemon": "^1.17.4",
     "npm-run-all": "^4.1.2",
     "postcss": "^6.0.22",
-    "postcss-cli": "^5.0.0"
+    "postcss-cli": "^5.0.0",
+    "serve": "^6.5.6"
   }
 }
