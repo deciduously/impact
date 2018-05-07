@@ -6,8 +6,8 @@ It's incremental, but not realtime.  For now, a second passes each time an Actio
 
 ## Requirements
 
-* Rust nightly - targeting `wasm32-unknown-unknown`.
-* npm/yarn
+* [Rust](https://www.rust-lang.org/en-US/) nightly 1.27.0+ - targeting `wasm32-unknown-unknown`.
+* [yarn](https://yarnpkg.com/)
 
 Provided scripts:
 
@@ -15,7 +15,7 @@ Provided scripts:
 * `start` - Start a development server on `localhost:8000` and watch for changes to either Rust or SCSS.
 * `prod` - Build a production bundle at `out/` and serve on `localhost:8080`.
 
-Note - the `wasm32-unknown-unknown` target does not currently support debug builds, so the dev server runs a release build of the rust code.  For now, the only differernce with with the production build is the JS/CSS bundling.  THe WASM is plenty fast, and this app is plenty simple.
+Note - the `wasm32-unknown-unknown` target does not currently support debug builds, so the dev server runs a release build of the rust code.  For now, the only differernce with with the production build is the JS/CSS bundling.  The WASM is plenty fast, and this app is plenty simple.
 
 ## Crates
 
