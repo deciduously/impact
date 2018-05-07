@@ -2,7 +2,7 @@
 /css
 /target
 **/*.rs.bk
-/out
+/release
 static/*.css
 .#*
 .vscode*
