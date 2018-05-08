@@ -12,7 +12,11 @@ pub enum IntFlag {
     NotYet,
 }
 
+pub type IntFlags = HashMap<IntFlag, i32>;
+
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum FloatFlag {
     OxygenDepletion,
 }
+
+pub type FloatFlags = HashMap<FloatFlag, f64>;

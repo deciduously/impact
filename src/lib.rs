@@ -7,7 +7,8 @@ mod types;
 
 use components::{control_container::ControlContainer, messages_container::MessagesContainer,
                  resource_container::ResourceContainer};
-use types::{Msg, flags::BoolFlags, messages::Message, resources::Resources, time::Time};
+use types::{Msg, flags::{BoolFlags, FloatFlags, IntFlags}, messages::Message,
+            resources::Resources, time::Time};
 use std::collections::HashMap;
 use yew::{prelude::*, services::console::ConsoleService};
 
@@ -16,6 +17,8 @@ pub struct Model {
     resource_values: Resources,
     messages: Vec<Message>,
     bool_flags: BoolFlags,
+    int_flags: IntFlags,
+    float_flags: FloatFlags,
 }
 
 impl<CTX> Component<CTX> for Model
@@ -31,6 +34,8 @@ where
             resource_values: HashMap::new(),
             messages: Vec::new(),
             bool_flags: HashMap::new(),
+            int_flags: HashMap::new(),
+            float_flags: HashMap::new(),
         }
     }
 

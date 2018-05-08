@@ -1,9 +1,11 @@
-use types::{self, actions::Action, flags::BoolFlag, resources::Resource};
+use types::{self, actions::Action, flags::{BoolFlag, FloatFlag}, resources::Resource};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
 // NOTE TO SELF - there shouldn't be too many buttons here.
 // Most will be tile-specific
+
+// Also, buttons and button-actions should all be stored in types::buttons
 
 pub struct ControlContainer {
     title: String,
@@ -48,8 +50,12 @@ where
                     callback.emit(types::Msg::Bulk(vec![
                         types::Msg::PerformAction(Action::SetBoolFlag(BoolFlag::OxygenMonitor)),
                         types::Msg::PerformAction(Action::SetResourceValue(Resource::Oxygen, 100)),
+                        types::Msg::PerformAction(Action::SetFloatFlag(
+                            FloatFlag::OxygenDepletion,
+                            -1,
+                        )),
                         types::Msg::PerformAction(Action::AddMessage(
-                            "Oxygen Monitor Up, 100 available".to_string(),
+                            "Oxygen Monitor Up".to_string(),
                         )),
                     ]));
                 }

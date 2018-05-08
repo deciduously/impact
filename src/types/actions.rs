@@ -1,5 +1,5 @@
 use super::super::Model;
-use types::{flags::BoolFlag, messages::Message, resources::Resource};
+use types::{flags::{BoolFlag, FloatFlag, IntFlag}, messages::Message, resources::Resource};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Action {
@@ -9,8 +9,8 @@ pub enum Action {
     ClearBoolFlag(BoolFlag),
     SetResourceValue(Resource, i32),
     AddResourceValue(Resource, i32),
-    //AddIntFlag(IntFlag, i32),
-    //SetFloatFlag(FloatFlag),
+    SetIntFlag(IntFlag, i32),
+    SetFloatFlag(FloatFlag, i32),
 }
 
 impl Action {
@@ -36,6 +36,12 @@ impl Action {
                 model
                     .messages
                     .push(Message::new(message.to_string(), &model.time));
+            }
+            SetIntFlag(f, amt) => {
+                model.int_flags.insert(*f, *amt);
+            }
+            SetFloatFlag(f, amt) => {
+                model.float_flags.insert(*f, *amt as f64);
             }
         };
         model.time.increment(); // TODO Model::tick() which will apply transformers and then tick fwd
