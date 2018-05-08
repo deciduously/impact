@@ -4,6 +4,11 @@ An extraterrestrial WASM adventure.  Very much WIP.
 
 It's incremental, but not realtime.  For now, a second passes each time an Action happens, which is not ideal...bulk actions will take way too long.  Eventually I will fine tune this so that each action has a duration, meaning adding messages to the console won't clog it up.
 
+## Caveats
+
+* This is in the very early stages of development.  Don't expect much if you clone and run it.  As of right now, some of the basic systems work but there's nothing like *content*, *styling*, *gamepley* at all.  The idea is that eventually it'll have that too, but it doesn't yet.  I put it up here in case it's helpful for spinning up your own Yew projects - here's one way to use things like SASS and Rollup and stuff alongside Yew that seems to work for me.
+* I do *not* know what I'm doing.  I'm an accountant with a hobby, this is the second web app I've ever made and the first was also not made with sane, normal tools.  Is using such a mix of experiemntal technologies a good choice for me, a total novice?  Almost definitely not.  Assume everything here is crap, andything that isn't is purely by accident.  It compiles and everything implemented seems to do what I wanted, so, hey.
+
 ## Requirements
 
 * [Rust](https://www.rust-lang.org/en-US/) nightly 1.27.0+ with the `wasm32-unknown-unknown` target.
@@ -14,13 +19,13 @@ You can use stable rust and Emscripten/asmjs but do you really *want* to?
 
 Note, `yarn` is only required because I've directly referenced it in the `watch:scss` and `watch:css` build scripts.  You can swap these to be `npm` appropriate if you prefer.  Heathen.
 
-Provided scripts:
+## Usage
 
-* `clean` - Clean build artifacts.
-* `start` - Start a development server on `localhost:8000` and watch for changes to either Rust or SCSS.
-* `prod` - Build a production bundle at `out/` and serve on `localhost:8080`.
+* `yarn clean` - Clean build artifacts.
+* `yarn start` - Start a development server on `localhost:8000` and watch for changes to either Rust or SCSS.
+* `yarn prod` - Build a production bundle at `release/` and serve on `localhost:8080`.
 
-Note - the `wasm32-unknown-unknown` target does not currently support debug builds, so the dev server runs a release build of the rust code.  For now, the only differernce with with the production build is the JS minifier and lack of hot reloading.
+Note - the `wasm32-unknown-unknown` target does not currently support debug builds, so the dev server runs a release build of the rust code.  For now, the only differernce with with the production build is the JS minifier (negligible gain) and lack of hot reloading.
 
 ## Crates
 
