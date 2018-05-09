@@ -11,7 +11,7 @@ impl Message {
     pub fn new(content: String, time: &Time) -> Self {
         Message {
             content,
-            time: time.clone(),
+            time: *time,
         }
     }
 }

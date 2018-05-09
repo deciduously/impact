@@ -1,6 +1,6 @@
 use std::{fmt, ops::Rem};
 
-#[derive(Clone, Debug, PartialEq, Eq)]
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Time {
     seconds: u64,
 }

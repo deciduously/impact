@@ -1,4 +1,4 @@
-use types::{self, actions::Action, flags::{BoolFlag, FloatFlag}, resources::Resource};
+use types::{self, buttons::Button};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
@@ -13,8 +13,7 @@ pub struct ControlContainer {
 }
 
 pub enum Msg {
-    ActivateOxygen,
-    Wait,
+    ButtonPressed(types::Msg),
 }
 
 #[derive(PartialEq, Clone)]
@@ -45,24 +44,9 @@ where
     fn update(&mut self, msg: Self::Msg, _env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
             // TODO this could/should be a macro, or at least abstracted out better
-            Msg::ActivateOxygen => {
+            Msg::ButtonPressed(msg) => {
                 if let Some(ref mut callback) = self.onsignal {
-                    callback.emit(types::Msg::Bulk(vec![
-                        types::Msg::PerformAction(Action::SetBoolFlag(BoolFlag::OxygenMonitor)),
-                        types::Msg::PerformAction(Action::SetResourceValue(Resource::Oxygen, 100)),
-                        types::Msg::PerformAction(Action::SetFloatFlag(
-                            FloatFlag::OxygenDepletion,
-                            -1,
-                        )),
-                        types::Msg::PerformAction(Action::AddMessage(
-                            "Oxygen Monitor Up".to_string(),
-                        )),
-                    ]));
-                }
-            }
-            Msg::Wait => {
-                if let Some(ref mut callback) = self.onsignal {
-                    callback.emit(types::Msg::PerformAction(Action::Noop));
+                    callback.emit(msg);
                 }
             }
         }
@@ -84,8 +68,12 @@ where
             <div class="container",>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>
-                    <button onclick=|_| Msg::Wait,>{"Wait 1 second"}</button>
-                    <button onclick=|_| Msg::ActivateOxygen,>{"Power Up Oxygen Meter"}</button>
+                    <button onclick=|_| Msg::ButtonPressed(Button::Wait.action()),>
+                        {Button::Wait.text()}
+                    </button>
+                    <button onclick=|_| Msg::ButtonPressed(Button::ActivateOxygen.action()),>
+                        {Button::ActivateOxygen.text()}
+                    </button>
                 </div>
             </div>
         }
