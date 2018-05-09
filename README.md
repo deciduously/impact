@@ -4,11 +4,6 @@ An extraterrestrial WASM adventure.  Very much WIP.
 
 It's incremental, but not realtime.  For now, a second passes each time an Action happens, which is not ideal...bulk actions will take way too long.  Eventually I will fine tune this so that each action has a duration, meaning adding messages to the console won't clog it up.
 
-## Caveats
-
-* This is in the very early stages of development.  Don't expect much if you clone and run it.  As of right now, some of the basic systems work but there's nothing like *content*, *styling*, or *gameplay* at all.  The idea is that eventually it'll have that too, but it doesn't yet.  I put it up here in case it's helpful for spinning up your own Yew projects - here's one way to use things like SASS and Rollup and stuff alongside Yew that seems to work for me.
-* I do *not* know what I'm doing.  I'm an accountant with a hobby, this is the second web app I've ever made and the first was also not made with sane, normal tools.  Is using such a mix of experimental technologies a good choice for me, a total novice?  Almost definitely not.  Assume everything here is crap, anything that isn't is purely by accident.  It compiles and everything implemented seems to do what I wanted, so, hey.
-
 ## Requirements
 
 * [Rust](https://www.rust-lang.org/en-US/) nightly 1.27.0+ with the `wasm32-unknown-unknown` target.
@@ -37,3 +32,8 @@ Note - the `wasm32-unknown-unknown` target does not currently support debug buil
 Many thinks to [OvermindDL1](https://github.com/overminddl1)'s [blog series](http://blog.overminddl1.com/tags/overbots/).  A lot of this is similar to his OCaml structure where applicable, and going through that tutorial gave me the idea and structure to even attempt this.  The SCSS scripts and flexbox setup are his until I tackle my own.  While I decided not to go with realtime incremental for this project the basic engine is very similar to his Overbots structure at least at this point in development, but, you know, in `yew`.  His [`bucklescript-tea`](https://github.com/OvermindDL1/bucklescript-tea) is also an amazing project and you should check it out!
 
 Also of course the [yew examples](https://github.com/DenisKolodin/yew/tree/master/examples) were invaluable in overcoming the humps.  I'm still not positive I'm getting the event pattern down proper but time will tell!
+
+## Caveats
+
+* This is in the very early stages of development.  Don't expect much if you clone and run it.  I put it up here in case it's helpful for spinning up your own Yew projects - here's one way to use things like SASS and Rollup and stuff alongside Yew that seems to work for me.
+* I do *not* know what I'm doing.  I'm an accountant with a hobby, this is the second web app I've ever made and the first was also not made with sane, normal tools.  Is using such a mix of experimental technologies a good choice for me, a total novice?  Almost definitely not.  Assume everything here is crap, anything that isn't is purely by accident.  It compiles and everything implemented seems to do what I wanted, so, hey.
