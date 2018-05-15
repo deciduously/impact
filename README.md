@@ -36,4 +36,4 @@ Also of course the [yew examples](https://github.com/DenisKolodin/yew/tree/maste
 ## Caveats
 
 * This is in the very early stages of development.  Don't expect much if you clone and run it.  I put it up here in case it's helpful for spinning up your own Yew projects - here's one way to use things like SASS and Rollup and stuff alongside Yew that seems to work for me.
-* I do *not* know what I'm doing.  I'm an accountant with a hobby, this is the second web app I've ever made and the first was also not made with sane, normal tools.  Is using such a mix of experimental technologies a good choice for me, a total novice?  Almost definitely not.  Assume everything here is crap, anything that isn't is purely by accident.  It compiles and everything implemented seems to do what I wanted, so, hey.
+* I do *not* know what I'm doing.  I'm an accountant with a hobby, this is the second web app I've ever made and the first was also not made with sane, normal tools.  Take everything here with a heaping mound of salt.
