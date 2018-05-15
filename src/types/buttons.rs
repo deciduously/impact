@@ -1,5 +1,7 @@
-use types::{Msg, actions::Action, flags::{BoolFlag, FloatFlag}, resources::Resource};
+use std::fmt;
+use types::{self, actions::Action, flags::{BoolFlag, FloatFlag}, resources::Resource};
 
+#[derive(Clone, PartialEq, Eq)]
 pub enum Button {
     Wait,
     ActivateOxygen,
@@ -7,7 +9,8 @@ pub enum Button {
 
 impl Button {
     // each button produces an impact::Msg to be passed up to the model
-    pub fn action(&self) -> Msg {
+    pub fn action(&self) -> types::Msg {
+        use types::Msg;
         match *self {
             Button::Wait => Msg::PerformAction(Action::Noop),
             Button::ActivateOxygen => Msg::Bulk(vec![
@@ -18,12 +21,15 @@ impl Button {
             ]),
         }
     }
+}
 
-    pub fn text(&self) -> &str {
-        match *self {
+impl fmt::Display for Button {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let s = match *self {
             Button::Wait => "Wait 1 Second",
             Button::ActivateOxygen => "Activate Oxygen",
-        }
+        };
+        write!(f, "{}", s)
     }
 }
 

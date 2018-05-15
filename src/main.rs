@@ -1,9 +1,9 @@
 extern crate impact;
 extern crate yew;
 
+use impact::Model;
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
-use impact::Model;
 
 pub struct Context {
     console: ConsoleService,

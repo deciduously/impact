@@ -1,5 +1,6 @@
 use super::super::Model;
-use types::{flags::{BoolFlag, FloatFlag, IntFlag}, messages::Message, resources::Resource};
+use types::{flags::{BoolFlag, FloatFlag, IntFlag}, messages::Message, resources::Resource,
+            time::Time};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Action {
@@ -44,8 +45,20 @@ impl Action {
                 model.float_flags.insert(*f, *amt as f64);
             }
         };
-        model.time.increment(); // TODO Model::tick() which will apply transformers and then tick fwd
+        model.tick(); // TODO Model::tick() which will apply transformers and then tick fwd
     }
 }
 
-// TODO timeactions which fire at a given tick - can limp in with Action
+// TODO timeactions which fire at a given tick - can lump in with Action
+
+#[derive(Debug)]
+pub struct TimeAction {
+    tick: Time,
+    action: Action,
+}
+
+impl TimeAction {
+    pub fn new(tick: Time, action: Action) -> Self {
+        TimeAction { tick, action }
+    }
+}

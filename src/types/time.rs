@@ -12,6 +12,9 @@ impl Time {
     pub fn increment(&mut self) {
         self.seconds += 1;
     }
+    pub fn from(seconds: u64) -> Time {
+        Time { seconds }
+    }
 }
 
 // TODO only show up to the highest amount

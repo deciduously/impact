@@ -7,9 +7,10 @@ mod types;
 
 use components::{control_container::ControlContainer, messages_container::MessagesContainer,
                  resource_container::ResourceContainer};
-use types::{Msg, flags::{BoolFlags, FloatFlags, IntFlags}, messages::Message,
-            resources::Resources, time::Time};
 use std::collections::HashMap;
+use types::{Msg, actions::{Action, TimeAction}, buttons::Button,
+            flags::{BoolFlags, FloatFlags, IntFlags}, messages::Message, resources::Resources,
+            time::Time};
 use yew::{prelude::*, services::console::ConsoleService};
 
 pub struct Model {
@@ -19,6 +20,15 @@ pub struct Model {
     bool_flags: BoolFlags,
     int_flags: IntFlags,
     float_flags: FloatFlags,
+    buttons: Vec<Button>,
+    timeactions: Vec<TimeAction>,
+}
+
+impl Model {
+    fn tick(&mut self) {
+        //process TimeActions
+        self.time.increment();
+    }
 }
 
 impl<CTX> Component<CTX> for Model
@@ -36,6 +46,13 @@ where
             bool_flags: HashMap::new(),
             int_flags: HashMap::new(),
             float_flags: HashMap::new(),
+            buttons: vec![Button::Wait, Button::ActivateOxygen], // TODO placehlder - these need actions to insert/remove
+            timeactions: vec![
+                TimeAction::new(
+                    Time::from(1),
+                    Action::AddMessage("It's been A SECOND".to_string()),
+                ),
+            ],
         }
     }
 
@@ -68,7 +85,7 @@ where
                 <div class="body",>
                     <span class="time",>{&format!("Time: {}", self.time.clone())}</span>
                     <ResourceContainer: resources=&self.resource_values,/>
-                    <ControlContainer: onsignal=|msg| msg,/>
+                    <ControlContainer: buttons=&self.buttons, onsignal=|msg| msg,/>
                     <MessagesContainer: messages=&self.messages,/>
                 </div>
             </div>

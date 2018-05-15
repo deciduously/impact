@@ -9,6 +9,7 @@ use yew::services::console::ConsoleService;
 
 pub struct ControlContainer {
     title: String,
+    buttons: Vec<Button>,
     onsignal: Option<Callback<types::Msg>>,
 }
 
@@ -18,12 +19,16 @@ pub enum Msg {
 
 #[derive(PartialEq, Clone)]
 pub struct Props {
+    pub buttons: Vec<Button>,
     pub onsignal: Option<Callback<types::Msg>>,
 }
 
 impl Default for Props {
     fn default() -> Self {
-        Props { onsignal: None }
+        Props {
+            buttons: Vec::new(),
+            onsignal: None,
+        }
     }
 }
 
@@ -37,6 +42,7 @@ where
     fn create(props: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
         ControlContainer {
             title: "Control".to_string(),
+            buttons: props.buttons,
             onsignal: props.onsignal,
         }
     }
@@ -54,6 +60,7 @@ where
     }
 
     fn change(&mut self, props: Self::Properties, _: &mut Env<CTX, Self>) -> ShouldRender {
+        self.buttons = props.buttons;
         self.onsignal = props.onsignal;
         true
     }
@@ -64,16 +71,18 @@ where
     CTX: AsMut<ConsoleService> + 'static,
 {
     fn view(&self) -> Html<CTX, Self> {
+        // YOu're having a lifetime problem - how to pass the message back up
+        // this is a standin
+        let view_button = |button: &Button| {
+            html! {
+                <button onclick=|_| Msg::ButtonPressed(types::Msg::PerformAction(types::actions::Action::Noop)),>{&format!("{}", button)}</button>
+            }
+        };
         html! {
             <div class="container",>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>
-                    <button onclick=|_| Msg::ButtonPressed(Button::Wait.action()),>
-                        {Button::Wait.text()}
-                    </button>
-                    <button onclick=|_| Msg::ButtonPressed(Button::ActivateOxygen.action()),>
-                        {Button::ActivateOxygen.text()}
-                    </button>
+                    { for self.buttons.iter().map(view_button) }
                 </div>
             </div>
         }

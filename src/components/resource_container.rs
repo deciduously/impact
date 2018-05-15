@@ -1,5 +1,5 @@
-use types::resources::{Resource, Resources};
 use std::collections::HashMap;
+use types::resources::{Resource, Resources};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
