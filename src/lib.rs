@@ -24,13 +24,6 @@ pub struct Model {
     timeactions: Vec<TimeAction>,
 }
 
-impl Model {
-    fn tick(&mut self) {
-        //process TimeActions
-        self.time.increment();
-    }
-}
-
 impl<CTX> Component<CTX> for Model
 where
     CTX: AsMut<ConsoleService>,
@@ -48,20 +41,23 @@ where
             float_flags: HashMap::new(),
             buttons: vec![Button::Wait, Button::ActivateOxygen], // TODO placehlder - these need actions to insert/remove
             timeactions: vec![
-                TimeAction::new(
-                    Time::from(1),
-                    Action::AddMessage("It's been A SECOND".to_string()),
-                ),
+                TimeAction::new(1, Action::AddMessage("It's been A SECOND".to_string())),
             ],
         }
     }
 
     fn update(&mut self, msg: Self::Msg, env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
+            Msg::Tick => {
+                env.as_mut().log(&format!("tick"));
+                self.time.increment();
+                true
+            }
             Msg::PerformAction(action) => {
                 env.as_mut().log(&format!("action: {:?}", action));
                 &action.perform(self);
-                true
+                self.update(types::Msg::Tick, env);
+                false
             }
             Msg::Bulk(list) => {
                 for msg in list {

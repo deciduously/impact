@@ -2,7 +2,7 @@ use std::{fmt, ops::Rem};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub struct Time {
-    seconds: u64,
+    pub seconds: u64,
 }
 
 impl Time {

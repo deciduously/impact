@@ -45,7 +45,6 @@ impl Action {
                 model.float_flags.insert(*f, *amt as f64);
             }
         };
-        model.tick(); // TODO Model::tick() which will apply transformers and then tick fwd
     }
 }
 
@@ -53,12 +52,15 @@ impl Action {
 
 #[derive(Debug)]
 pub struct TimeAction {
-    tick: Time,
-    action: Action,
+    pub tick: Time,
+    pub action: Action,
 }
 
 impl TimeAction {
-    pub fn new(tick: Time, action: Action) -> Self {
-        TimeAction { tick, action }
+    pub fn new(tick: u64, action: Action) -> Self {
+        TimeAction {
+            tick: Time::from(tick),
+            action,
+        }
     }
 }

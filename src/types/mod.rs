@@ -8,6 +8,7 @@ pub mod time;
 use self::actions::Action;
 
 pub enum Msg {
+    Tick,
     PerformAction(Action),
     Bulk(Vec<Msg>),
 }
