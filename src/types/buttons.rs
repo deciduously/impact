@@ -1,4 +1,3 @@
-use super::super::Msg;
 use std::fmt;
 use types::{actions::Action, flags::{BoolFlag, FloatFlag}, resources::Resource};
 
@@ -10,19 +9,26 @@ pub enum Button {
 
 impl Button {
     // each button produces an impact::Msg to be passed up to the model
-    pub fn action(&self) -> Msg {
+    pub fn action(&self) -> Vec<Action> {
         match *self {
-            Button::Wait => Msg::PerformAction(Action::Noop),
-            Button::ActivateOxygen => Msg::Bulk(vec![
-                Msg::PerformAction(Action::SetBoolFlag(BoolFlag::OxygenMonitor)),
-                Msg::PerformAction(Action::SetResourceValue(Resource::Oxygen, 100)),
-                Msg::PerformAction(Action::SetFloatFlag(FloatFlag::OxygenDepletion, -1)),
-                Msg::PerformAction(Action::AddMessage("Oxygen Monitor Up".to_string())),
-            ]),
+            Button::Wait => vec![Action::Noop],
+            Button::ActivateOxygen => vec![
+                Action::SetBoolFlag(BoolFlag::OxygenMonitor),
+                Action::SetResourceValue(Resource::Oxygen, 100),
+                Action::SetFloatFlag(FloatFlag::OxygenDepletion, -1),
+                Action::AddMessage("Oxygen Monitor Up".to_string()),
+            ],
+        }
+    }
+    pub fn title(&self) -> String {
+        match *self {
+            Button::Wait => "Wait 1 Second".to_string(),
+            Button::ActivateOxygen => "Activate Oxygen".to_string(),
         }
     }
 }
 
+//TODO delete this?
 impl fmt::Display for Button {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let s = match *self {

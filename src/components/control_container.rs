@@ -1,4 +1,4 @@
-use types::{actions::Action, buttons::Button};
+use types::buttons::Button;
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
@@ -70,12 +70,11 @@ where
     CTX: AsMut<ConsoleService> + 'static,
 {
     fn view(&self) -> Html<CTX, Self> {
-        // YOu're having a lifetime problem - how to pass the message back up
-        // this is a standin
-        // ALSO why does ImpactMsg not work in here?
+        // You're making a Button component that will pass its own callback up.
         let view_button = |button: &Button| {
+            let m = super::super::msg_from_actions(button.action());
             html! {
-                <button onclick=|_| Msg::ButtonPressed(super::super::Msg::PerformAction(Action::Noop)),>{&format!("{}", button)}</button>
+                <button onclick= move |_| Msg::ButtonPressed(m.clone()),>{button.title()}</button>
             }
         };
         html! {

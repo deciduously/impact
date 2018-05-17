@@ -24,10 +24,19 @@ pub struct Model {
     timeactions: Vec<TimeAction>, // this isn't really State - these should live somewhere else
 }
 
+#[derive(Debug, Clone)]
 pub enum Msg {
     Tick,
     PerformAction(Action),
     Bulk(Vec<Msg>),
+}
+
+pub fn msg_from_actions(actions: Vec<Action>) -> Msg {
+    let mut pas = Vec::new();
+    for a in actions.iter() {
+        pas.push(Msg::PerformAction(a.clone()));
+    }
+    Msg::Bulk(pas)
 }
 
 impl<CTX> Component<CTX> for Model
