@@ -21,15 +21,9 @@ impl Button {
             ],
         }
     }
-    pub fn title(&self) -> String {
-        match *self {
-            Button::Wait => "Wait 1 Second".to_string(),
-            Button::ActivateOxygen => "Activate Oxygen".to_string(),
-        }
-    }
+    // TODO button.visible()
 }
 
-//TODO delete this?
 impl fmt::Display for Button {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         let s = match *self {

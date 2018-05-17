@@ -12,6 +12,7 @@ pub fn apply_transformers(model: &mut Model) {
     // iterate over FloatFlags - all transformers will have a corresponding FloatFlag
     for (f, amt) in &model.float_flags {
         match f {
+            // Having trouble reusing Action.perform()
             FloatFlag::OxygenDepletion => {
                 let r = model.resource_values.entry(Resource::Oxygen).or_insert(0.0);
                 *r += amt;

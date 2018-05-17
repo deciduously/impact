@@ -73,7 +73,7 @@ where
         let view_button = |button: &Button| {
             let m = msg_from_actions(button.action());
             html! {
-                <button onclick= move |_| Msg::ButtonPressed(m.clone()),>{button.title()}</button>
+                <button onclick= move |_| Msg::ButtonPressed(m.clone()),>{&format!("{}", button)}</button>
             }
         };
         html! {
