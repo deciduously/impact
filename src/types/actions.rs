@@ -48,7 +48,7 @@ impl Action {
     }
 }
 
-// Also use references/boxes better?  maybe avoid the clone?
+// TODO use references/boxes better?  maybe avoid the clone?
 pub fn msg_from_actions(actions: Vec<Action>) -> Msg {
     if actions.len() == 0 {
         return Msg::PerformAction(self::Action::Noop);
