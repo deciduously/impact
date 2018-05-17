@@ -1,4 +1,4 @@
-use super::super::Model;
+use super::super::{Model, Msg};
 use types::{flags::{BoolFlag, FloatFlag, IntFlag}, messages::Message, resources::Resource,
             time::Time};
 
@@ -46,6 +46,21 @@ impl Action {
             }
         };
     }
+}
+
+// Also use references/boxes better?  maybe avoid the clone?
+pub fn msg_from_actions(actions: Vec<Action>) -> Msg {
+    if actions.len() == 0 {
+        return Msg::PerformAction(self::Action::Noop);
+    } else if actions.len() == 1 {
+        return Msg::PerformAction(actions[0].clone());
+    }
+
+    let mut pas = Vec::new();
+    for a in actions.iter() {
+        pas.push(Msg::PerformAction(a.clone()));
+    }
+    Msg::Bulk(pas)
 }
 
 #[derive(Debug, Clone)]

@@ -31,7 +31,16 @@ pub enum Msg {
     Bulk(Vec<Msg>),
 }
 
+// Also use references/boxes better?  maybe avoid the clone?
+// Also also should this REALLY live here?
+// maybe more like Action.to_msg() or something, over in types::actions - though that might cause lifetime issues again?
 pub fn msg_from_actions(actions: Vec<Action>) -> Msg {
+    if actions.len() == 0 {
+        return Msg::PerformAction(types::actions::Action::Noop);
+    } else if actions.len() == 1 {
+        return Msg::PerformAction(actions[0].clone());
+    }
+
     let mut pas = Vec::new();
     for a in actions.iter() {
         pas.push(Msg::PerformAction(a.clone()));

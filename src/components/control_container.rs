@@ -1,4 +1,4 @@
-use types::buttons::Button;
+use types::{actions::msg_from_actions, buttons::Button};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
@@ -70,9 +70,8 @@ where
     CTX: AsMut<ConsoleService> + 'static,
 {
     fn view(&self) -> Html<CTX, Self> {
-        // You're making a Button component that will pass its own callback up.
         let view_button = |button: &Button| {
-            let m = super::super::msg_from_actions(button.action());
+            let m = msg_from_actions(button.action());
             html! {
                 <button onclick= move |_| Msg::ButtonPressed(m.clone()),>{button.title()}</button>
             }
