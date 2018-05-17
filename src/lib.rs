@@ -10,7 +10,7 @@ use components::{control_container::ControlContainer, messages_container::Messag
 use std::collections::HashMap;
 use types::{actions::{Action, TimeAction}, buttons::Button,
             flags::{BoolFlags, FloatFlags, IntFlags}, messages::Message, resources::Resources,
-            time::Time};
+            time::Time, transformers::apply_transformers};
 use yew::{prelude::*, services::console::ConsoleService};
 
 pub struct Model {
@@ -58,6 +58,11 @@ where
             Msg::Tick => {
                 env.as_mut().log(&format!("tick"));
                 self.time.increment();
+
+                // Do TimeActions, Transformers
+
+                apply_transformers(self);
+
                 //for ta in self.timeactions { // CANNOT MOVE OUT OF BORROWED CONTENT - do it like ACtion - its own Perform
                 //    if ta.tick.seconds == self.time.seconds {
                 //        self.update(types::Msg::PerformAction(ta.action), env);

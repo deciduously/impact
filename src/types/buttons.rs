@@ -17,6 +17,7 @@ impl Button {
                 Action::SetResourceValue(Resource::Oxygen, 100),
                 Action::SetFloatFlag(FloatFlag::OxygenDepletion, -1),
                 Action::AddMessage("Oxygen Monitor Up".to_string()),
+                Action::AddMessage("Losing 1 Oxygen per second".to_string()),
             ],
         }
     }
