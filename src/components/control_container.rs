@@ -1,26 +1,26 @@
-use types::{self, buttons::Button};
+use types::{actions::Action, buttons::Button};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
+
+type ImpactMsg = super::super::Msg;
 
 // NOTE TO SELF - there shouldn't be too many buttons here.
 // Most will be tile-specific
 
-// Also, buttons and button-actions should all be stored in types::buttons
-
 pub struct ControlContainer {
     title: String,
     buttons: Vec<Button>,
-    onsignal: Option<Callback<types::Msg>>,
+    onsignal: Option<Callback<ImpactMsg>>,
 }
 
 pub enum Msg {
-    ButtonPressed(types::Msg),
+    ButtonPressed(ImpactMsg),
 }
 
 #[derive(PartialEq, Clone)]
 pub struct Props {
     pub buttons: Vec<Button>,
-    pub onsignal: Option<Callback<types::Msg>>,
+    pub onsignal: Option<Callback<ImpactMsg>>,
 }
 
 impl Default for Props {
@@ -49,7 +49,6 @@ where
 
     fn update(&mut self, msg: Self::Msg, _env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
-            // TODO this could/should be a macro, or at least abstracted out better
             Msg::ButtonPressed(msg) => {
                 if let Some(ref mut callback) = self.onsignal {
                     callback.emit(msg);
@@ -73,9 +72,10 @@ where
     fn view(&self) -> Html<CTX, Self> {
         // YOu're having a lifetime problem - how to pass the message back up
         // this is a standin
+        // ALSO why does ImpactMsg not work in here?
         let view_button = |button: &Button| {
             html! {
-                <button onclick=|_| Msg::ButtonPressed(types::Msg::PerformAction(types::actions::Action::Noop)),>{&format!("{}", button)}</button>
+                <button onclick=|_| Msg::ButtonPressed(super::super::Msg::PerformAction(Action::Noop)),>{&format!("{}", button)}</button>
             }
         };
         html! {

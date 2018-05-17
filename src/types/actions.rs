@@ -48,9 +48,7 @@ impl Action {
     }
 }
 
-// TODO timeactions which fire at a given tick - can lump in with Action
-
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct TimeAction {
     pub tick: Time,
     pub action: Action,
@@ -64,3 +62,4 @@ impl TimeAction {
         }
     }
 }
+// fn Perform

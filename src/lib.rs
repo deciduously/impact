@@ -8,7 +8,7 @@ mod types;
 use components::{control_container::ControlContainer, messages_container::MessagesContainer,
                  resource_container::ResourceContainer};
 use std::collections::HashMap;
-use types::{Msg, actions::{Action, TimeAction}, buttons::Button,
+use types::{actions::{Action, TimeAction}, buttons::Button,
             flags::{BoolFlags, FloatFlags, IntFlags}, messages::Message, resources::Resources,
             time::Time};
 use yew::{prelude::*, services::console::ConsoleService};
@@ -21,7 +21,13 @@ pub struct Model {
     int_flags: IntFlags,
     float_flags: FloatFlags,
     buttons: Vec<Button>,
-    timeactions: Vec<TimeAction>,
+    timeactions: Vec<TimeAction>, // this isn't really State - these should live somewhere else
+}
+
+pub enum Msg {
+    Tick,
+    PerformAction(Action),
+    Bulk(Vec<Msg>),
 }
 
 impl<CTX> Component<CTX> for Model
@@ -51,13 +57,18 @@ where
             Msg::Tick => {
                 env.as_mut().log(&format!("tick"));
                 self.time.increment();
+                //for ta in self.timeactions { // CANNOT MOVE OUT OF BORROWED CONTENT - do it like ACtion - its own Perform
+                //    if ta.tick.seconds == self.time.seconds {
+                //        self.update(types::Msg::PerformAction(ta.action), env);
+                //    }
+                //}
                 true
             }
             Msg::PerformAction(action) => {
                 env.as_mut().log(&format!("action: {:?}", action));
                 &action.perform(self);
-                self.update(types::Msg::Tick, env);
-                false
+                self.update(Msg::Tick, env); // TODO - THIS IS A CORE MECHANIC - IS THIS REALLY EACH ACTION
+                true
             }
             Msg::Bulk(list) => {
                 for msg in list {
