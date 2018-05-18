@@ -7,7 +7,7 @@ mod types;
 
 use components::{control_container::ControlContainer, messages_container::MessagesContainer,
                  resource_container::ResourceContainer};
-use types::{actions::{Action, TimeAction}, buttons::Button,
+use types::{actions::{apply_timeactions, Action}, buttons::Button,
             flags::{BoolFlags, FloatFlags, IntFlags}, messages::Message, resources::Resources,
             time::Time, transformers::apply_transformers};
 use yew::{prelude::*, services::console::ConsoleService};
@@ -20,7 +20,6 @@ pub struct Model {
     int_flags: IntFlags,
     float_flags: FloatFlags,
     buttons: Vec<Button>,
-    timeactions: Vec<TimeAction>, // this isn't really State - these should live somewhere else
 }
 
 #[derive(Debug, Clone)]
@@ -46,9 +45,6 @@ where
             int_flags: IntFlags::new(),
             float_flags: FloatFlags::new(),
             buttons: vec![Button::Wait, Button::ActivateOxygen], // TODO placeholder - these need actions to insert/remove
-            timeactions: vec![
-                TimeAction::new(1, Action::AddMessage("It's been A SECOND".to_string())),
-            ],
         }
     }
 
@@ -57,17 +53,8 @@ where
             Msg::Tick => {
                 env.as_mut().log(&format!("tick"));
                 self.time.increment();
-
-                //Apply Transformers
                 apply_transformers(self);
-
-                // TODO Apply TimeActions
-
-                //for ta in self.timeactions { // CANNOT MOVE OUT OF BORROWED CONTENT - do it like ACtion - its own Perform
-                //    if ta.tick.seconds == self.time.seconds {
-                //        self.update(types::Msg::PerformAction(ta.action), env);
-                //    }
-                //}
+                apply_timeactions(self);
                 true
             }
             Msg::PerformAction(action) => {

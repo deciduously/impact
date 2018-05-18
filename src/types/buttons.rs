@@ -1,5 +1,5 @@
 use std::fmt;
-use types::{actions::Action, flags::{BoolFlag, FloatFlag}, resources::Resource};
+use types::{actions::Action, flags::BoolFlag, resources::Resource};
 
 #[derive(Clone, PartialEq, Eq)]
 pub enum Button {

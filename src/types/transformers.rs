@@ -42,6 +42,7 @@ pub fn apply_transformers(model: &mut Model) {
 
     for (f, enabled) in bfs {
         match f {
+            // this doesn't need to be a match - you're doin the same thing for any Transformer
             BoolFlag::LeakyTank => {
                 if enabled {
                     for eff in Transformer::LeakyTank.effects().iter() {

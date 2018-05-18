@@ -65,16 +65,27 @@ pub fn msg_from_actions(actions: Vec<Action>) -> Msg {
 
 #[derive(Debug, Clone)]
 pub struct TimeAction {
-    pub tick: Time,
-    pub action: Action,
+    pub time: Time,
+    pub action: Action, //Vec<Action>?
 }
 
 impl TimeAction {
     pub fn new(tick: u64, action: Action) -> Self {
         TimeAction {
-            tick: Time::from(tick),
+            time: Time::from(tick),
             action,
         }
     }
 }
-// fn Perform
+
+pub fn apply_timeactions(model: &mut Model) {
+    // TODO where the heck should these live?
+    let timeactions = vec![
+        TimeAction::new(15, Action::AddMessage("It's been 15 SECONDS".to_string())),
+    ];
+    for ta in timeactions.iter() {
+        if ta.time.seconds == model.time.seconds {
+            ta.action.perform(model);
+        }
+    }
+}
