@@ -53,7 +53,7 @@ where
     fn view(&self) -> Html<CTX, Self> {
         let view_message = |message: &Message| {
             html! {
-                <li><span class="message-time",>{&format!("{}", message.time)}</span>{&format!("{}", message.content)}</li>
+                <li><span class="message-time",>{&format!("{}", message.time)}</span>{" "}{&format!("{}", message.content)}</li>
             }
         };
         html! {

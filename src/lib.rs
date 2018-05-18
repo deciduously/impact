@@ -5,8 +5,8 @@ extern crate yew;
 mod components;
 mod types;
 
-use components::{control_container::ControlContainer, messages_container::MessagesContainer,
-                 resource_container::ResourceContainer};
+use components::{control_container::ControlContainer, map_container::MapContainer,
+                 messages_container::MessagesContainer, resource_container::ResourceContainer};
 use types::{actions::{apply_timeactions, Action}, buttons::Button,
             flags::{BoolFlags, FloatFlags, IntFlags}, messages::Message, resources::Resources,
             time::Time, transformers::apply_transformers};
@@ -86,8 +86,9 @@ where
                     <span class="time",>{&format!("Time: {}", self.time.clone())}</span>
                     <ResourceContainer: resources=&self.resource_values,/>
                     <ControlContainer: buttons=&self.buttons, onsignal=|msg| msg,/>
-                    <MessagesContainer: messages=&self.messages,/>
+                    <MapContainer: />
                 </div>
+                <MessagesContainer: messages=&self.messages,/>
             </div>
         }
     }

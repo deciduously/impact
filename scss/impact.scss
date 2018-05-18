@@ -76,6 +76,11 @@
         }
     }
 
+    .container-map {
+        flex: 1 0 256px;
+        order: 1;
+    }
+
     .container-messages {
         flex: 0 0 192px;
 
