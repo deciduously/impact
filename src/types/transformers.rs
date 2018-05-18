@@ -1,5 +1,5 @@
 use super::super::Model;
-use types::{flags::BoolFlag, resources::Resource};
+use types::{actions::Action, flags::BoolFlag, resources::Resource};
 
 // Each transformer should have a corresponding BoolFlag
 pub enum Transformer {
@@ -28,15 +28,10 @@ impl Transformation {
         use self::Transformation::*;
         match self {
             Generate(resource, delta) => {
-                // Add positive resource value
-                // TODO make this a method on Resource, for use here and in Action
-                let r = model.resource_values.entry(*resource).or_insert(0.0);
-                *r += delta;
+                Action::AddResourceValue(*resource, *delta as i32).perform(model);
             }
             Consume(resource, delta) => {
-                // Add negative resource value
-                let r = model.resource_values.entry(*resource).or_insert(0.0);
-                *r -= delta;
+                Action::AddResourceValue(*resource, -(*delta as i32)).perform(model);
             }
         }
     }
