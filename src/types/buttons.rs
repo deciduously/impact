@@ -15,9 +15,11 @@ impl Button {
             Button::ActivateOxygen => vec![
                 Action::SetBoolFlag(BoolFlag::OxygenMonitor),
                 Action::SetResourceValue(Resource::Oxygen, 100),
-                Action::SetFloatFlag(FloatFlag::OxygenDepletion, -1),
+                Action::SetResourceValue(Resource::Power, 1),
+                Action::SetBoolFlag(BoolFlag::LeakyTank),
                 Action::AddMessage("Oxygen Monitor Up".to_string()),
                 Action::AddMessage("Losing 1 Oxygen per second".to_string()),
+                Action::AddMessage("Regenerating 2 power per second".to_string()),
             ],
         }
     }

@@ -2,7 +2,8 @@ use std::collections::HashMap;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum BoolFlag {
-    OxygenMonitor,
+    OxygenMonitor, // controls corresponding button visibility
+    LeakyTank,
 }
 
 pub type BoolFlags = HashMap<BoolFlag, bool>;
@@ -16,7 +17,7 @@ pub type IntFlags = HashMap<IntFlag, i32>;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum FloatFlag {
-    OxygenDepletion,
+    OxygenDepletion, // redundant?
 }
 
 pub type FloatFlags = HashMap<FloatFlag, f64>;

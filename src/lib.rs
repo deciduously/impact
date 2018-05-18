@@ -7,7 +7,6 @@ mod types;
 
 use components::{control_container::ControlContainer, messages_container::MessagesContainer,
                  resource_container::ResourceContainer};
-use std::collections::HashMap;
 use types::{actions::{Action, TimeAction}, buttons::Button,
             flags::{BoolFlags, FloatFlags, IntFlags}, messages::Message, resources::Resources,
             time::Time, transformers::apply_transformers};
@@ -41,12 +40,12 @@ where
     fn create(_: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
         Model {
             time: Time::new(),
-            resource_values: HashMap::new(),
+            resource_values: Resources::new(),
             messages: Vec::new(),
-            bool_flags: HashMap::new(),
-            int_flags: HashMap::new(),
-            float_flags: HashMap::new(),
-            buttons: vec![Button::Wait, Button::ActivateOxygen], // TODO placehlder - these need actions to insert/remove
+            bool_flags: BoolFlags::new(),
+            int_flags: IntFlags::new(),
+            float_flags: FloatFlags::new(),
+            buttons: vec![Button::Wait, Button::ActivateOxygen], // TODO placeholder - these need actions to insert/remove
             timeactions: vec![
                 TimeAction::new(1, Action::AddMessage("It's been A SECOND".to_string())),
             ],
@@ -59,9 +58,10 @@ where
                 env.as_mut().log(&format!("tick"));
                 self.time.increment();
 
-                // Do TimeActions, Transformers
-
+                //Apply Transformers
                 apply_transformers(self);
+
+                // TODO Apply TimeActions
 
                 //for ta in self.timeactions { // CANNOT MOVE OUT OF BORROWED CONTENT - do it like ACtion - its own Perform
                 //    if ta.tick.seconds == self.time.seconds {
