@@ -3,8 +3,8 @@ use types::time::Time;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Message {
-    time: Time,
-    content: String,
+    pub time: Time,
+    pub content: String,
 }
 
 impl Message {

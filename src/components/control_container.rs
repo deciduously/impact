@@ -73,11 +73,14 @@ where
         let view_button = |button: &Button| {
             let m = msg_from_actions(button.action());
             html! {
-                <button onclick= move |_| Msg::ButtonPressed(m.clone()),>{&format!("{}", button)}</button>
+                <span class="control-button",>
+                    <button onclick= move |_| Msg::ButtonPressed(m.clone()),>{&format!("{}", button)}</button>
+                </span>
             }
         };
+        // issue 121 workaround for multiple classes
         html! {
-            <div class="container",>
+            <div class=("container", "container-control"),>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>
                     { for self.buttons.iter().map(view_button) }

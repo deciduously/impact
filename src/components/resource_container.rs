@@ -55,15 +55,16 @@ where
     // TODO individual Resources-ids and inner/chidren ids after scroller
     fn view(&self) -> Html<CTX, Self> {
         let view_resource = |resource: (&Resource, &f64)| {
+            // TODO resource-delta
             html! {
-                <>
+                <div class="resource",>
                     <span class="resource-title",>{&format!("{:?}", resource.0)}</span>
                     <span class="resource-amt",>{resource.1}</span>
-                </>
+                </div>
             }
         };
         html! {
-            <div class="container",>
+            <div class=("container", "container-resources"),>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>{ for self.resources.iter().map(view_resource) }</div>
             </div>

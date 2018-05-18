@@ -51,13 +51,13 @@ where
     CTX: AsMut<ConsoleService> + 'static,
 {
     fn view(&self) -> Html<CTX, Self> {
-        let view_message = |message| {
+        let view_message = |message: &Message| {
             html! {
-                <li>{&format!("{}", message)}</li>
+                <li><span class="message-time",>{&format!("{}", message.time)}</span>{&format!("{}", message.content)}</li>
             }
         };
         html! {
-            <div class="container",>
+            <div class=("container", "container-messages"),>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>
                     <ul>{ for self.messages.iter().rev().map(view_message) }</ul>

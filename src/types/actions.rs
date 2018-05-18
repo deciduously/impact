@@ -80,6 +80,7 @@ impl TimeAction {
 
 pub fn apply_timeactions(model: &mut Model) {
     // TODO where the heck should these live?
+    // I don't want to reallocate the whole thing every time...
     let timeactions = vec![
         TimeAction::new(15, Action::AddMessage("It's been 15 SECONDS".to_string())),
     ];
