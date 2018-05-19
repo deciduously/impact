@@ -70,13 +70,12 @@ where
     CTX: AsMut<ConsoleService> + 'static,
 {
     fn view(&self) -> Html<CTX, Self> {
-        let view_button = |button: (&Button, &bool)| {
-            let (b, enabled) = button;
+        let view_button = |(button, enabled): (&Button, &bool)| {
             if *enabled {
-                let m = msg_from_actions(b.action());
+                let m = msg_from_actions(button.action());
                 html! {
                     <span class="control-button",>
-                        <button onclick= move |_| Msg::ButtonPressed(m.clone()),>{&format!("{}", b)}</button>
+                        <button onclick= move |_| Msg::ButtonPressed(m.clone()),>{&format!("{}", button)}</button>
                     </span>
                 }
             } else {

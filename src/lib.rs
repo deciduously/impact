@@ -19,7 +19,7 @@ pub struct Model {
     bool_flags: BoolFlags,
     int_flags: IntFlags,
     float_flags: FloatFlags,
-    buttons: Buttons, //maybe a hashmap with a visible flag?
+    buttons: Buttons,
 }
 
 #[derive(Debug, Clone)]

@@ -1,11 +1,12 @@
 use std::{fmt, collections::HashMap};
-//use super::super::Model;
 use types::{actions::Action, flags::BoolFlag, resources::Resource};
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Button {
     Wait,
     ActivateOxygen,
+    OpenToolbox,
+    ApplyTape,
 }
 
 impl Button {
@@ -19,20 +20,27 @@ impl Button {
                 Action::SetResourceValue(Resource::Power, 1),
                 Action::SetBoolFlag(BoolFlag::LeakyTank),
                 Action::AddMessage("Oxygen Monitor Up".to_string()),
-                Action::AddMessage("Losing 1 Oxygen per second".to_string()),
+                Action::AddMessage("Losing 1 Oxygen per second - tank leaky".to_string()),
                 Action::AddMessage("Regenerating 2 power per second".to_string()),
                 Action::DisableButton(Button::ActivateOxygen),
+                Action::EnableButton(Button::OpenToolbox),
+            ],
+            Button::OpenToolbox => vec![
+                Action::AddMessage(
+                    "You unceremoniously dump the toolbox contents all over the ship".to_string(),
+                ),
+                Action::EnableButton(Button::ApplyTape),
+                Action::DisableButton(Button::OpenToolbox),
+            ],
+            Button::ApplyTape => vec![
+                Action::ClearBoolFlag(BoolFlag::LeakyTank),
+                Action::AddMessage(
+                    "Leak stopped - for now, but so has your power regen".to_string(),
+                ),
+                Action::DisableButton(Button::ApplyTape),
             ],
         }
     }
-    //pub fn visible(&self, model: &Model) -> bool {
-    //    match *self {
-    //        Button::Wait => true,
-    //        Button::ActivateOxygen => {
-    //            !model.bool_flags.get(&BoolFlag::OxygenMonitor).unwrap_or(&false)
-    //        }
-    //    }
-    //}
 }
 
 impl fmt::Display for Button {
@@ -40,6 +48,8 @@ impl fmt::Display for Button {
         let s = match *self {
             Button::Wait => "Wait 1 Second",
             Button::ActivateOxygen => "Activate Oxygen",
+            Button::OpenToolbox => "Search Toolbox",
+            Button::ApplyTape => "Apply Scotch Tape to Tank",
         };
         write!(f, "{}", s)
     }
