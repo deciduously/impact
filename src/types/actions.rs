@@ -1,6 +1,6 @@
 use super::super::{Model, Msg};
-use types::{flags::{BoolFlag, FloatFlag, IntFlag}, messages::Message, resources::Resource,
-            time::Time};
+use types::{buttons::Button, flags::{BoolFlag, FloatFlag, IntFlag}, messages::Message,
+            resources::Resource, time::Time};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Action {
@@ -12,6 +12,8 @@ pub enum Action {
     AddResourceValue(Resource, i32),
     SetIntFlag(IntFlag, i32),
     SetFloatFlag(FloatFlag, i32),
+    EnableButton(Button),
+    DisableButton(Button),
 }
 
 impl Action {
@@ -43,6 +45,12 @@ impl Action {
             }
             SetFloatFlag(f, amt) => {
                 model.float_flags.insert(*f, *amt as f64);
+            }
+            EnableButton(button) => {
+                model.buttons.insert(button.clone(), true);
+            }
+            DisableButton(button) => {
+                model.buttons.insert(button.clone(), false);
             }
         };
     }
@@ -82,6 +90,7 @@ pub fn apply_timeactions(model: &mut Model) {
     // TODO where the heck should these live?
     // I don't want to reallocate the whole thing every time...
     let timeactions = vec![
+        TimeAction::new(1, Action::EnableButton(Button::ActivateOxygen)),
         TimeAction::new(15, Action::AddMessage("It's been 15 SECONDS".to_string())),
     ];
     for ta in timeactions.iter() {

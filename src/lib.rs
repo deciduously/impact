@@ -7,7 +7,7 @@ mod types;
 
 use components::{control_container::ControlContainer, map_container::MapContainer,
                  messages_container::MessagesContainer, resource_container::ResourceContainer};
-use types::{actions::{apply_timeactions, Action}, buttons::Button,
+use types::{actions::{apply_timeactions, Action}, buttons::{Button, Buttons},
             flags::{BoolFlags, FloatFlags, IntFlags}, messages::Message, resources::Resources,
             time::Time, transformers::apply_transformers};
 use yew::{prelude::*, services::console::ConsoleService};
@@ -19,7 +19,7 @@ pub struct Model {
     bool_flags: BoolFlags,
     int_flags: IntFlags,
     float_flags: FloatFlags,
-    buttons: Vec<Button>,
+    buttons: Buttons, //maybe a hashmap with a visible flag?
 }
 
 #[derive(Debug, Clone)]
@@ -37,15 +37,17 @@ where
     type Properties = ();
 
     fn create(_: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
-        Model {
+        let mut ret = Model {
             time: Time::new(),
             resource_values: Resources::new(),
             messages: Vec::new(),
             bool_flags: BoolFlags::new(),
             int_flags: IntFlags::new(),
             float_flags: FloatFlags::new(),
-            buttons: vec![Button::Wait, Button::ActivateOxygen], // TODO placeholder - these need actions to insert/remove
-        }
+            buttons: Buttons::new(),
+        };
+        ret.buttons.insert(Button::Wait, true);
+        ret
     }
 
     fn update(&mut self, msg: Self::Msg, env: &mut Env<CTX, Self>) -> ShouldRender {

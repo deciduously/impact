@@ -1,4 +1,4 @@
-use types::{actions::msg_from_actions, buttons::Button};
+use types::{actions::msg_from_actions, buttons::{Button, Buttons}};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
@@ -9,7 +9,7 @@ type ImpactMsg = super::super::Msg;
 
 pub struct ControlContainer {
     title: String,
-    buttons: Vec<Button>,
+    buttons: Buttons,
     onsignal: Option<Callback<ImpactMsg>>,
 }
 
@@ -19,14 +19,14 @@ pub enum Msg {
 
 #[derive(PartialEq, Clone)]
 pub struct Props {
-    pub buttons: Vec<Button>,
+    pub buttons: Buttons,
     pub onsignal: Option<Callback<ImpactMsg>>,
 }
 
 impl Default for Props {
     fn default() -> Self {
         Props {
-            buttons: Vec::new(),
+            buttons: Buttons::new(),
             onsignal: None,
         }
     }
@@ -70,12 +70,19 @@ where
     CTX: AsMut<ConsoleService> + 'static,
 {
     fn view(&self) -> Html<CTX, Self> {
-        let view_button = |button: &Button| {
-            let m = msg_from_actions(button.action());
-            html! {
-                <span class="control-button",>
-                    <button onclick= move |_| Msg::ButtonPressed(m.clone()),>{&format!("{}", button)}</button>
-                </span>
+        let view_button = |button: (&Button, &bool)| {
+            let (b, enabled) = button;
+            if *enabled {
+                let m = msg_from_actions(b.action());
+                html! {
+                    <span class="control-button",>
+                        <button onclick= move |_| Msg::ButtonPressed(m.clone()),>{&format!("{}", b)}</button>
+                    </span>
+                }
+            } else {
+                html! {
+                    <div></div>
+                }
             }
         };
         // issue 121 workaround for multiple classes

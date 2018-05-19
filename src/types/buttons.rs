@@ -1,7 +1,8 @@
-use std::fmt;
+use std::{fmt, collections::HashMap};
+//use super::super::Model;
 use types::{actions::Action, flags::BoolFlag, resources::Resource};
 
-#[derive(Clone, PartialEq, Eq)]
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Button {
     Wait,
     ActivateOxygen,
@@ -20,10 +21,18 @@ impl Button {
                 Action::AddMessage("Oxygen Monitor Up".to_string()),
                 Action::AddMessage("Losing 1 Oxygen per second".to_string()),
                 Action::AddMessage("Regenerating 2 power per second".to_string()),
+                Action::DisableButton(Button::ActivateOxygen),
             ],
         }
     }
-    // TODO button.visible()
+    //pub fn visible(&self, model: &Model) -> bool {
+    //    match *self {
+    //        Button::Wait => true,
+    //        Button::ActivateOxygen => {
+    //            !model.bool_flags.get(&BoolFlag::OxygenMonitor).unwrap_or(&false)
+    //        }
+    //    }
+    //}
 }
 
 impl fmt::Display for Button {
@@ -36,12 +45,11 @@ impl fmt::Display for Button {
     }
 }
 
+pub type Buttons = HashMap<Button, bool>;
+
 //fn button_cost(b: Button) -> Option<(Resource, i32)> {
 //    match b {
 //   }
 //}
-
-// store them structs?  title/actions?
-// and then pass a vector of the active ones to the ControlContainer to turn into buttons that emit callbacks
 
 // tiles will work similar but also pass up their ID along with the Action?
