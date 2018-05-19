@@ -1,6 +1,6 @@
 use super::super::{Model, Msg};
 use types::{buttons::Button, flags::{BoolFlag, FloatFlag, IntFlag}, messages::Message,
-            resources::Resource, time::Time};
+            resources::Resource, tiles::Tile, time::Time};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Action {
@@ -14,6 +14,7 @@ pub enum Action {
     SetFloatFlag(FloatFlag, i32),
     EnableButton(Button),
     DisableButton(Button),
+    AddTile(Tile),
 }
 
 impl Action {
@@ -51,6 +52,9 @@ impl Action {
             }
             DisableButton(button) => {
                 model.buttons.insert(button.clone(), false);
+            }
+            AddTile(tile) => {
+                model.tiles.push(tile.clone());
             }
         };
     }

@@ -9,7 +9,7 @@ use components::{control_container::ControlContainer, map_container::MapContaine
                  messages_container::MessagesContainer, resource_container::ResourceContainer};
 use types::{actions::{apply_timeactions, Action}, buttons::{Button, Buttons},
             flags::{BoolFlags, FloatFlags, IntFlags}, messages::Message, resources::Resources,
-            time::Time, transformers::apply_transformers};
+            tiles::Tiles, time::Time, transformers::apply_transformers};
 use yew::{prelude::*, services::console::ConsoleService};
 
 pub struct Model {
@@ -20,6 +20,7 @@ pub struct Model {
     int_flags: IntFlags,
     float_flags: FloatFlags,
     buttons: Buttons,
+    tiles: Tiles,
 }
 
 #[derive(Debug, Clone)]
@@ -45,6 +46,7 @@ where
             int_flags: IntFlags::new(),
             float_flags: FloatFlags::new(),
             buttons: Buttons::new(),
+            tiles: Tiles::new(),
         };
         ret.buttons.insert(Button::Wait, true);
         ret
@@ -88,7 +90,7 @@ where
                     <span class="time",>{&format!("Time: {}", self.time.clone())}</span>
                     <ResourceContainer: resources=&self.resource_values,/>
                     <ControlContainer: buttons=&self.buttons, onsignal=|msg| msg,/>
-                    <MapContainer: />
+                    <MapContainer: tiles=&self.tiles,/>
                 </div>
                 <MessagesContainer: messages=&self.messages,/>
             </div>

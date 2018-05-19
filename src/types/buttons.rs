@@ -1,5 +1,5 @@
 use std::{fmt, collections::HashMap};
-use types::{actions::Action, flags::BoolFlag, resources::Resource};
+use types::{actions::Action, flags::BoolFlag, resources::Resource, tiles::Tile};
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Button {
@@ -53,7 +53,7 @@ impl Button {
                 Action::AddMessage("Just kidding - everything is fine.".to_string()),
                 Action::SetResourceValue(Resource::Chutzpah, 50),
                 Action::DisableButton(Button::OpenDoor),
-                // Map Tiles here!
+                Action::AddTile(Tile::new(0, "Ship".to_string())),
             ],
         }
     }

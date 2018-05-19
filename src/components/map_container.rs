@@ -1,18 +1,24 @@
+use types::tiles::{Tile, Tiles};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
 pub struct MapContainer {
     title: String,
+    tiles: Vec<Tile>,
 }
 
 pub enum Msg {}
 
 #[derive(PartialEq, Clone)]
-pub struct Props {}
+pub struct Props {
+    pub tiles: Tiles,
+}
 
 impl Default for Props {
     fn default() -> Self {
-        Props {}
+        Props {
+            tiles: Tiles::new(),
+        }
     }
 }
 
@@ -23,9 +29,10 @@ where
     type Msg = Msg;
     type Properties = Props;
 
-    fn create(_props: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
+    fn create(props: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
         MapContainer {
             title: "Map".into(),
+            tiles: props.tiles,
         }
     }
 
@@ -33,7 +40,8 @@ where
         true
     }
 
-    fn change(&mut self, _props: Self::Properties, _: &mut Env<CTX, Self>) -> ShouldRender {
+    fn change(&mut self, props: Self::Properties, _: &mut Env<CTX, Self>) -> ShouldRender {
+        self.tiles = props.tiles;
         true
     }
 }
@@ -43,11 +51,16 @@ where
     CTX: AsMut<ConsoleService> + 'static,
 {
     fn view(&self) -> Html<CTX, Self> {
+        let view_tile = |tile: &Tile| {
+            html!{
+                <span class="tile-title",>{&tile.name}</span>
+            }
+        };
         html! {
             <div class=("container", "container-map"),>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>
-                {"map!"}
+                    {for self.tiles.iter().map(view_tile) }
                 </div>
             </div>
         }
