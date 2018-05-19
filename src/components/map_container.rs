@@ -1,23 +1,31 @@
+use components::control_container::ControlContainer;
 use types::tiles::{Tile, Tiles};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
+type ImpactMsg = super::super::Msg;
+
 pub struct MapContainer {
     title: String,
-    tiles: Vec<Tile>,
+    tiles: Tiles,
+    onsignal: Option<Callback<ImpactMsg>>,
 }
 
-pub enum Msg {}
+pub enum Msg {
+    ButtonPressed(ImpactMsg),
+}
 
 #[derive(PartialEq, Clone)]
 pub struct Props {
     pub tiles: Tiles,
+    pub onsignal: Option<Callback<ImpactMsg>>,
 }
 
 impl Default for Props {
     fn default() -> Self {
         Props {
             tiles: Tiles::new(),
+            onsignal: None,
         }
     }
 }
@@ -33,15 +41,24 @@ where
         MapContainer {
             title: "Map".into(),
             tiles: props.tiles,
+            onsignal: props.onsignal,
         }
     }
 
-    fn update(&mut self, _msg: Self::Msg, _env: &mut Env<CTX, Self>) -> ShouldRender {
-        true
+    fn update(&mut self, msg: Self::Msg, _env: &mut Env<CTX, Self>) -> ShouldRender {
+        match msg {
+            Msg::ButtonPressed(msg) => {
+                if let Some(ref mut callback) = self.onsignal {
+                    callback.emit(msg);
+                }
+            }
+        }
+        false
     }
 
     fn change(&mut self, props: Self::Properties, _: &mut Env<CTX, Self>) -> ShouldRender {
         self.tiles = props.tiles;
+        self.onsignal = props.onsignal;
         true
     }
 }
@@ -51,16 +68,20 @@ where
     CTX: AsMut<ConsoleService> + 'static,
 {
     fn view(&self) -> Html<CTX, Self> {
-        let view_tile = |tile: &Tile| {
-            html!{
-                <span class="tile-title",>{&tile.name}</span>
+        let view_tile = |(_id, tile): (&u32, &Tile)| {
+            html! {
+                <div class="tile-title",>{&format!("{}", tile)}</div>
+                <div class="tile-art",>{&tile.art}</div>
+                <div class="tile-control",>
+                <ControlContainer: buttons=&tile.buttons, onsignal=|msg| Msg::ButtonPressed(msg),/>
+                </div>
             }
         };
         html! {
             <div class=("container", "container-map"),>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>
-                    {for self.tiles.iter().map(view_tile) }
+                    { for self.tiles.iter().map(view_tile) }
                 </div>
             </div>
         }

@@ -12,9 +12,9 @@ pub enum Action {
     AddResourceValue(Resource, i32),
     SetIntFlag(IntFlag, i32),
     SetFloatFlag(FloatFlag, i32),
-    EnableButton(Button),
-    DisableButton(Button),
-    AddTile(Tile),
+    EnableButton(Button, u32),
+    DisableButton(Button, u32),
+    AddTile(u32, Tile),
 }
 
 impl Action {
@@ -47,14 +47,19 @@ impl Action {
             SetFloatFlag(f, amt) => {
                 model.float_flags.insert(*f, *amt as f64);
             }
-            EnableButton(button) => {
-                model.buttons.insert(button.clone(), true);
+            EnableButton(button, tid) => {
+                // grab tile first
+                let mut t = model.tiles.get(tid).unwrap().clone();
+                t.buttons.insert(button.clone(), true);
+                model.tiles.insert(*tid, t); // push it back to the model?
             }
-            DisableButton(button) => {
-                model.buttons.insert(button.clone(), false);
+            DisableButton(button, tid) => {
+                let mut t = model.tiles.get(tid).unwrap().clone();
+                t.buttons.insert(button.clone(), false);
+                model.tiles.insert(*tid, t);
             }
-            AddTile(tile) => {
-                model.tiles.push(tile.clone());
+            AddTile(id, tile) => {
+                model.tiles.insert(*id, tile.clone());
             }
         };
     }
@@ -94,7 +99,7 @@ pub fn apply_timeactions(model: &mut Model) {
     // TODO where the heck should these live?
     // I don't want to reallocate the whole thing every time...
     let timeactions = vec![
-        TimeAction::new(1, Action::EnableButton(Button::ActivateOxygen)),
+        TimeAction::new(1, Action::EnableButton(Button::ActivateOxygen, 0)),
         TimeAction::new(15, Action::AddMessage("It's been 15 SECONDS".to_string())),
     ];
     for ta in timeactions.iter() {

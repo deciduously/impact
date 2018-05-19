@@ -22,22 +22,22 @@ impl Button {
                 Action::SetBoolFlag(BoolFlag::LeakyTank),
                 Action::AddMessage("Oxygen Monitor Up".to_string()),
                 Action::AddMessage("Losing 10 Oxygen per second - tank leaky".to_string()),
-                Action::DisableButton(Button::ActivateOxygen),
-                Action::EnableButton(Button::OpenToolbox),
-                Action::EnableButton(Button::OpenDoor),
+                Action::DisableButton(Button::ActivateOxygen, 0),
+                Action::EnableButton(Button::OpenToolbox, 0),
+                Action::EnableButton(Button::OpenDoor, 0),
             ],
             Button::OpenToolbox => vec![
                 Action::AddMessage(
                     "You unceremoniously dump the toolbox contents all over the ship".to_string(),
                 ),
-                Action::EnableButton(Button::ApplyTape),
-                Action::EnableButton(Button::FiddleControls),
-                Action::DisableButton(Button::OpenToolbox),
+                Action::EnableButton(Button::ApplyTape, 0),
+                Action::EnableButton(Button::FiddleControls, 0),
+                Action::DisableButton(Button::OpenToolbox, 0),
             ],
             Button::ApplyTape => vec![
                 Action::ClearBoolFlag(BoolFlag::LeakyTank),
                 Action::AddMessage("Leak stopped - for now.".to_string()),
-                Action::DisableButton(Button::ApplyTape),
+                Action::DisableButton(Button::ApplyTape, 0),
             ],
             Button::FiddleControls => vec![
                 Action::SetResourceValue(Resource::Power, 1),
@@ -46,14 +46,14 @@ impl Button {
                 Action::AddMessage(
                     "Your fuel cells are on and recharging from your excess oxygen".to_string(),
                 ),
-                Action::DisableButton(Button::FiddleControls),
+                Action::DisableButton(Button::FiddleControls, 0),
             ],
             Button::OpenDoor => vec![
                 Action::AddMessage("You push the airlock open and immediately DIE.".to_string()),
                 Action::AddMessage("Just kidding - everything is fine.".to_string()),
                 Action::SetResourceValue(Resource::Chutzpah, 50),
-                Action::DisableButton(Button::OpenDoor),
-                Action::AddTile(Tile::new(0, "Ship".to_string())),
+                // Add a NEW TILE
+                Action::DisableButton(Button::OpenDoor, 0),
             ],
         }
     }

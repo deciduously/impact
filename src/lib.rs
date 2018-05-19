@@ -5,11 +5,11 @@ extern crate yew;
 mod components;
 mod types;
 
-use components::{control_container::ControlContainer, map_container::MapContainer,
-                 messages_container::MessagesContainer, resource_container::ResourceContainer};
-use types::{actions::{apply_timeactions, Action}, buttons::{Button, Buttons},
+use components::{map_container::MapContainer, messages_container::MessagesContainer,
+                 resource_container::ResourceContainer};
+use types::{actions::{apply_timeactions, Action}, buttons::Button,
             flags::{BoolFlags, FloatFlags, IntFlags}, messages::Message, resources::Resources,
-            tiles::Tiles, time::Time, transformers::apply_transformers};
+            tiles::{Tile, Tiles}, time::Time, transformers::apply_transformers};
 use yew::{prelude::*, services::console::ConsoleService};
 
 pub struct Model {
@@ -19,7 +19,6 @@ pub struct Model {
     bool_flags: BoolFlags,
     int_flags: IntFlags,
     float_flags: FloatFlags,
-    buttons: Buttons,
     tiles: Tiles,
 }
 
@@ -45,10 +44,10 @@ where
             bool_flags: BoolFlags::new(),
             int_flags: IntFlags::new(),
             float_flags: FloatFlags::new(),
-            buttons: Buttons::new(),
             tiles: Tiles::new(),
         };
-        ret.buttons.insert(Button::Wait, true);
+        Action::AddTile(0, Tile::new("Ship".into(), ".::^::.".into())).perform(&mut ret);
+        Action::EnableButton(Button::Wait, 0).perform(&mut ret);
         ret
     }
 
@@ -89,8 +88,7 @@ where
                 <div class="body",>
                     <span class="time",>{&format!("Time: {}", self.time.clone())}</span>
                     <ResourceContainer: resources=&self.resource_values,/>
-                    <ControlContainer: buttons=&self.buttons, onsignal=|msg| msg,/>
-                    <MapContainer: tiles=&self.tiles,/>
+                    <MapContainer: tiles=&self.tiles, onsignal=|msg| msg,/>
                 </div>
                 <MessagesContainer: messages=&self.messages,/>
             </div>

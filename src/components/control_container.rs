@@ -4,9 +4,6 @@ use yew::services::console::ConsoleService;
 
 type ImpactMsg = super::super::Msg;
 
-// NOTE TO SELF - there shouldn't be too many buttons here.
-// Most will be tile-specific
-
 pub struct ControlContainer {
     title: String,
     buttons: Buttons,

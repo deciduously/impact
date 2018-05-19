@@ -1,13 +1,27 @@
+use std::{fmt, collections::HashMap};
+use types::buttons::Buttons;
+
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Tile {
-    id: u32,
-    pub name: String,
+    name: String,
+    pub art: String,
+    pub buttons: Buttons,
 }
 
 impl Tile {
-    pub fn new(id: u32, name: String) -> Self {
-        Tile { id, name }
+    pub fn new(name: String, art: String) -> Self {
+        Tile {
+            name,
+            art,
+            buttons: Buttons::new(),
+        }
     }
 }
 
-pub type Tiles = Vec<Tile>;
+impl fmt::Display for Tile {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "{}\n", self.name)
+    }
+}
+
+pub type Tiles = HashMap<u32, Tile>;
