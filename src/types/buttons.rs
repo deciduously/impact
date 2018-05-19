@@ -8,6 +8,7 @@ pub enum Button {
     OpenToolbox,
     ApplyTape,
     FiddleControls,
+    OpenDoor,
 }
 
 impl Button {
@@ -23,6 +24,7 @@ impl Button {
                 Action::AddMessage("Losing 10 Oxygen per second - tank leaky".to_string()),
                 Action::DisableButton(Button::ActivateOxygen),
                 Action::EnableButton(Button::OpenToolbox),
+                Action::EnableButton(Button::OpenDoor),
             ],
             Button::OpenToolbox => vec![
                 Action::AddMessage(
@@ -46,6 +48,13 @@ impl Button {
                 ),
                 Action::DisableButton(Button::FiddleControls),
             ],
+            Button::OpenDoor => vec![
+                Action::AddMessage("You push the airlock open and immediately DIE.".to_string()),
+                Action::AddMessage("Just kidding - everything is fine.".to_string()),
+                Action::SetResourceValue(Resource::Chutzpah, 50),
+                Action::DisableButton(Button::OpenDoor),
+                // Map Tiles here!
+            ],
         }
     }
 }
@@ -58,6 +67,7 @@ impl fmt::Display for Button {
             Button::OpenToolbox => "Search Toolbox",
             Button::ApplyTape => "Apply Scotch Tape to Tank",
             Button::FiddleControls => "Mess with the control panel",
+            Button::OpenDoor => "Open Airlock",
         };
         write!(f, "{}", s)
     }
