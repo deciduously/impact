@@ -4,6 +4,7 @@ use std::collections::HashMap;
 pub enum BoolFlag {
     OxygenMonitor, // controls corresponding button visibility
     LeakyTank,
+    PowerRegen,
 }
 
 pub type BoolFlags = HashMap<BoolFlag, bool>;

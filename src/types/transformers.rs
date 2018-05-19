@@ -4,15 +4,17 @@ use types::{actions::Action, flags::BoolFlag, resources::Resource};
 // Each transformer should have a corresponding BoolFlag
 pub enum Transformer {
     LeakyTank,
+    PowerRegen,
 }
 
 impl Transformer {
     pub fn effects(&self) -> Vec<Transformation> {
         use self::Transformation::*;
         match self {
-            Transformer::LeakyTank => vec![
-                Consume(Resource::Oxygen, 1.0),
+            Transformer::LeakyTank => vec![Consume(Resource::Oxygen, 10.0)],
+            Transformer::PowerRegen => vec![
                 Generate(Resource::Power, 2.0),
+                Consume(Resource::Oxygen, 1.0),
             ],
         }
     }
@@ -46,6 +48,13 @@ pub fn apply_transformers(model: &mut Model) {
             BoolFlag::LeakyTank => {
                 if enabled {
                     for eff in Transformer::LeakyTank.effects().iter() {
+                        eff.apply_transformation(model);
+                    }
+                }
+            }
+            BoolFlag::PowerRegen => {
+                if enabled {
+                    for eff in Transformer::PowerRegen.effects().iter() {
                         eff.apply_transformation(model);
                     }
                 }

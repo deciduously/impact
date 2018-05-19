@@ -7,6 +7,7 @@ pub enum Button {
     ActivateOxygen,
     OpenToolbox,
     ApplyTape,
+    FiddleControls,
 }
 
 impl Button {
@@ -16,12 +17,10 @@ impl Button {
             Button::Wait => vec![Action::Noop],
             Button::ActivateOxygen => vec![
                 Action::SetBoolFlag(BoolFlag::OxygenMonitor),
-                Action::SetResourceValue(Resource::Oxygen, 100),
-                Action::SetResourceValue(Resource::Power, 1),
+                Action::SetResourceValue(Resource::Oxygen, 1000),
                 Action::SetBoolFlag(BoolFlag::LeakyTank),
                 Action::AddMessage("Oxygen Monitor Up".to_string()),
-                Action::AddMessage("Losing 1 Oxygen per second - tank leaky".to_string()),
-                Action::AddMessage("Regenerating 2 power per second".to_string()),
+                Action::AddMessage("Losing 10 Oxygen per second - tank leaky".to_string()),
                 Action::DisableButton(Button::ActivateOxygen),
                 Action::EnableButton(Button::OpenToolbox),
             ],
@@ -30,14 +29,22 @@ impl Button {
                     "You unceremoniously dump the toolbox contents all over the ship".to_string(),
                 ),
                 Action::EnableButton(Button::ApplyTape),
+                Action::EnableButton(Button::FiddleControls),
                 Action::DisableButton(Button::OpenToolbox),
             ],
             Button::ApplyTape => vec![
                 Action::ClearBoolFlag(BoolFlag::LeakyTank),
-                Action::AddMessage(
-                    "Leak stopped - for now, but so has your power regen".to_string(),
-                ),
+                Action::AddMessage("Leak stopped - for now.".to_string()),
                 Action::DisableButton(Button::ApplyTape),
+            ],
+            Button::FiddleControls => vec![
+                Action::SetResourceValue(Resource::Power, 1),
+                Action::SetBoolFlag(BoolFlag::PowerRegen),
+                Action::AddMessage("You hear a loud bang from the bottom of the ship".to_string()),
+                Action::AddMessage(
+                    "Your fuel cells are on and recharging from your excess oxygen".to_string(),
+                ),
+                Action::DisableButton(Button::FiddleControls),
             ],
         }
     }
@@ -50,6 +57,7 @@ impl fmt::Display for Button {
             Button::ActivateOxygen => "Activate Oxygen",
             Button::OpenToolbox => "Search Toolbox",
             Button::ApplyTape => "Apply Scotch Tape to Tank",
+            Button::FiddleControls => "Mess with the control panel",
         };
         write!(f, "{}", s)
     }
