@@ -12,7 +12,6 @@ pub enum Button {
 }
 
 impl Button {
-    // each button produces an impact::Msg to be passed up to the model
     pub fn action(&self) -> Vec<Action> {
         match *self {
             Button::Wait => vec![Action::Noop],
@@ -52,7 +51,7 @@ impl Button {
                 Action::AddMessage("You push the airlock open and immediately DIE.".to_string()),
                 Action::AddMessage("Just kidding - everything is fine.".to_string()),
                 Action::SetResourceValue(Resource::Chutzpah, 50),
-                // Add a NEW TILE
+                Action::AddTile(1, Tile::new("Field".into(), ".......!!!!!.....".into())),
                 Action::DisableButton(Button::OpenDoor, 0),
             ],
         }

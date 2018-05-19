@@ -51,7 +51,7 @@ impl Action {
                 // grab tile first
                 let mut t = model.tiles.get(tid).unwrap().clone();
                 t.buttons.insert(button.clone(), true);
-                model.tiles.insert(*tid, t); // push it back to the model?
+                model.tiles.insert(*tid, t); // push it back to the model
             }
             DisableButton(button, tid) => {
                 let mut t = model.tiles.get(tid).unwrap().clone();
