@@ -1,6 +1,6 @@
 use super::super::{Model, Msg};
-use types::{buttons::Button, flags::{BoolFlag, FloatFlag, IntFlag}, messages::Message,
-            resources::Resource, tiles::{Tile, TileID}, time::Time, transformers::Transformation};
+use types::{buttons::Button, flags::BoolFlag, messages::Message, resources::Resource,
+            tiles::{Tile, TileID}, time::Time, transformers::Transformation};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Action {
@@ -11,8 +11,8 @@ pub enum Action {
     SetResourceValue(Resource, i64),
     AddResourceValue(Resource, i64),
     AddResourceDelta(Resource, i64),
-    SetIntFlag(IntFlag, i64),
-    SetFloatFlag(FloatFlag, i64),
+    //SetIntFlag(IntFlag, i64),
+    //SetFloatFlag(FloatFlag, i64),
     EnableButton(TileID, Button),
     DisableButton(TileID, Button),
     AddTile(TileID, Tile),
@@ -23,11 +23,6 @@ impl Action {
         use self::Action::*;
         match self {
             Noop => {}
-            AddResourceValue(resource, delta) => {
-                // TODO add min/maxes, and check here
-                let r = model.resource_values.entry(*resource).or_insert(0);
-                *r += *delta;
-            }
             SetBoolFlag(f) => {
                 model.bool_flags.insert(*f, true);
                 //apply delta
@@ -47,28 +42,44 @@ impl Action {
             ClearBoolFlag(f) => {
                 model.bool_flags.insert(*f, false);
                 //remove delta
+                // TODO: POTENTIAL BUG
+                // you should check if it's already false or not
+                if let Some(tf) = f.transformer() {
+                    for eff in tf.effects() {
+                        match eff {
+                            Transformation::Generate(r, delta) => {
+                                Action::AddResourceDelta(r, -delta).perform(model);
+                            }
+                            Transformation::Consume(r, delta) => {
+                                Action::AddResourceDelta(r, delta).perform(model);
+                            }
+                        }
+                    }
+                }
             }
             SetResourceValue(resource, amt) => {
-                model.resource_values.insert(*resource, *amt);
+                model.resource_values.insert(*resource, (*amt, 0));
+            }
+            AddResourceValue(resource, delta) => {
+                // TODO add min/maxes, and check here
+                let r = model.resource_values.entry(*resource).or_insert((0, 0));
+                r.0 += *delta;
             }
             AddResourceDelta(resource, delta) => {
-                let rd = model
-                    .int_flags
-                    .entry(IntFlag::ResourceDelta(*resource))
-                    .or_insert(0);
-                *rd += *delta;
+                let r = model.resource_values.entry(*resource).or_insert((0, 0));
+                r.1 += *delta;
             }
             AddMessage(message) => {
                 model
                     .messages
                     .push(Message::new(message.to_string(), &model.time));
             }
-            SetIntFlag(f, amt) => {
-                model.int_flags.insert(*f, *amt);
-            }
-            SetFloatFlag(f, amt) => {
-                model.float_flags.insert(*f, *amt as f64);
-            }
+            //SetIntFlag(f, amt) => {
+            //    model.int_flags.insert(*f, *amt);
+            //}
+            //SetFloatFlag(f, amt) => {
+            //    model.float_flags.insert(*f, *amt as f64);
+            //}
             EnableButton(tid, button) => {
                 // grab tile first
                 let mut t = model.tiles.get(tid).unwrap().clone();

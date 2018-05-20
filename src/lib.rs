@@ -7,9 +7,9 @@ mod types;
 
 use components::{map_container::MapContainer, messages_container::MessagesContainer,
                  resource_container::ResourceContainer};
-use types::{actions::{apply_timeactions, Action}, buttons::Button,
-            flags::{BoolFlags, FloatFlags, IntFlags}, messages::Message, resources::Resources,
-            tiles::{Tile, Tiles}, time::Time, transformers::apply_transformers};
+use types::{actions::{apply_timeactions, Action}, buttons::Button, flags::BoolFlags,
+            messages::Message, resources::Resources, tiles::{Tile, Tiles}, time::Time,
+            transformers::apply_transformers};
 use yew::{prelude::*, services::console::ConsoleService};
 
 pub struct Model {
@@ -17,8 +17,8 @@ pub struct Model {
     resource_values: Resources,
     messages: Vec<Message>,
     bool_flags: BoolFlags,
-    int_flags: IntFlags,
-    float_flags: FloatFlags,
+    //int_flags: IntFlags,
+    //float_flags: FloatFlags,
     tiles: Tiles,
 }
 
@@ -42,8 +42,8 @@ where
             resource_values: Resources::new(),
             messages: Vec::new(),
             bool_flags: BoolFlags::new(),
-            int_flags: IntFlags::new(),
-            float_flags: FloatFlags::new(),
+            //int_flags: IntFlags::new(),
+            //float_flags: FloatFlags::new(),
             tiles: Tiles::new(),
         };
         Action::AddTile(0, Tile::new("Ship".into(), ".::^::.".into())).perform(&mut ret);

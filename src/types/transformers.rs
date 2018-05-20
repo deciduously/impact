@@ -18,7 +18,7 @@ impl Transformer {
         }
     }
 
-    pub fn apply_transformer(&self, model: &mut Model) {
+    fn apply_transformer(&self, model: &mut Model) {
         for eff in self.effects().iter() {
             eff.apply_transformation(model);
         }
@@ -31,7 +31,7 @@ pub enum Transformation {
 }
 
 impl Transformation {
-    pub fn apply_transformation(&self, model: &mut Model) {
+    fn apply_transformation(&self, model: &mut Model) {
         use self::Transformation::*;
         match self {
             Generate(resource, delta) => {

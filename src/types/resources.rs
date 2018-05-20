@@ -7,4 +7,5 @@ pub enum Resource {
     Power,
 }
 
-pub type Resources = HashMap<Resource, i64>;
+// tuple stores Amount, Delta
+pub type Resources = HashMap<Resource, (i64, i64)>;

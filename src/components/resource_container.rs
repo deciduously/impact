@@ -1,4 +1,3 @@
-use std::collections::HashMap;
 use types::resources::{Resource, Resources};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
@@ -19,7 +18,7 @@ pub struct Props {
 impl Default for Props {
     fn default() -> Self {
         Props {
-            resources: HashMap::new(),
+            resources: Resources::new(),
         }
     }
 }
@@ -54,12 +53,13 @@ where
 {
     // TODO individual Resources-ids and inner/chidren ids after scroller
     fn view(&self) -> Html<CTX, Self> {
-        let view_resource = |resource: (&Resource, &i64)| {
+        let view_resource = |(resource, (amt, delta)): (&Resource, &(i64, i64))| {
             // TODO resource-delta
             html! {
                 <div class="resource",>
-                    <span class="resource-title",>{&format!("{:?}", resource.0)}</span>
-                    <span class="resource-amt",>{resource.1}</span>
+                    <span class="resource-title",>{&format!("{:?}", resource)}</span>
+                    <span class="resource-amt",>{amt}</span>
+                    <span class="resource-delta",>{&format!("{}/sec", delta)}</span>
                 </div>
             }
         };

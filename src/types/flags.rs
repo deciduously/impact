@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use types::{resources::Resource, transformers::Transformer};
+use types::transformers::Transformer;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum BoolFlag {
@@ -21,16 +21,16 @@ impl BoolFlag {
 
 pub type BoolFlags = HashMap<BoolFlag, bool>;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum IntFlag {
-    ResourceDelta(Resource),
-}
+//#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+//pub enum IntFlag {
+//    NotYet,
+//}
 
-pub type IntFlags = HashMap<IntFlag, i64>;
+//pub type IntFlags = HashMap<IntFlag, i64>;
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
-pub enum FloatFlag {
-    NotYet,
-}
+//#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+//pub enum FloatFlag {
+//    NotYet,
+//}
 
-pub type FloatFlags = HashMap<FloatFlag, f64>;
+//pub type FloatFlags = HashMap<FloatFlag, f64>;
