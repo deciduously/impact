@@ -103,7 +103,7 @@ pub fn apply_timeactions(model: &mut Model) {
         TimeAction::new(15, Action::AddMessage("It's been 15 SECONDS".to_string())),
     ];
     for ta in timeactions.iter() {
-        if ta.time.seconds == model.time.seconds {
+        if ta.time == model.time {
             ta.action.perform(model);
         }
     }

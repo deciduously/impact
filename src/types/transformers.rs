@@ -18,6 +18,12 @@ impl Transformer {
             ],
         }
     }
+
+    pub fn apply_transformer(&self, model: &mut Model) {
+        for eff in self.effects().iter() {
+            eff.apply_transformation(model);
+        }
+    }
 }
 
 pub enum Transformation {
@@ -44,19 +50,16 @@ pub fn apply_transformers(model: &mut Model) {
 
     for (f, enabled) in bfs {
         match f {
-            // this doesn't need to be a match - you're doin the same thing for any Transformer
+            // this doesn't need to be a match - you're doing the same thing for any Transformer
+            // how do I compare across enums?
             BoolFlag::LeakyTank => {
                 if enabled {
-                    for eff in Transformer::LeakyTank.effects().iter() {
-                        eff.apply_transformation(model);
-                    }
+                    Transformer::LeakyTank.apply_transformer(model);
                 }
             }
             BoolFlag::PowerRegen => {
                 if enabled {
-                    for eff in Transformer::PowerRegen.effects().iter() {
-                        eff.apply_transformation(model);
-                    }
+                    Transformer::PowerRegen.apply_transformer(model);
                 }
             }
             _ => {} // Not all BoolFlags correspond to transformers - skip 'em
