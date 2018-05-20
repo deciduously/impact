@@ -20,7 +20,7 @@ impl Tile {
 
 impl fmt::Display for Tile {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}\n", self.name)
+        writeln!(f, "{}", self.name)
     }
 }
 

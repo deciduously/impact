@@ -82,12 +82,12 @@ impl Action {
             //}
             EnableButton(tid, button) => {
                 // grab tile first
-                let mut t = model.tiles.get(tid).unwrap().clone();
+                let mut t = model.tiles[tid].clone();
                 t.buttons.insert(button.clone(), true);
                 model.tiles.insert(*tid, t); // push it back to the model
             }
             DisableButton(tid, button) => {
-                let mut t = model.tiles.get(tid).unwrap().clone();
+                let mut t = model.tiles[tid].clone();
                 t.buttons.insert(button.clone(), false);
                 model.tiles.insert(*tid, t);
             }
@@ -99,8 +99,8 @@ impl Action {
 }
 
 // TODO use references/boxes better?  maybe avoid the clone?
-pub fn msg_from_actions(actions: Vec<Action>) -> Msg {
-    if actions.len() == 0 {
+pub fn msg_from_actions(actions: &[Action]) -> Msg {
+    if actions.is_empty() {
         return Msg::PerformAction(self::Action::Noop);
     } else if actions.len() == 1 {
         return Msg::PerformAction(actions[0].clone());

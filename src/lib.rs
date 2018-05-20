@@ -54,7 +54,7 @@ where
     fn update(&mut self, msg: Self::Msg, env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
             Msg::Tick => {
-                env.as_mut().log(&format!("tick"));
+                env.as_mut().log("tick");
                 self.time.increment();
                 apply_transformers(self);
                 apply_timeactions(self);
@@ -62,7 +62,7 @@ where
             }
             Msg::PerformAction(action) => {
                 env.as_mut().log(&format!("action: {:?}", action));
-                &action.perform(self);
+                action.perform(self);
                 self.update(Msg::Tick, env); // TODO - THIS IS A CORE MECHANIC - IS THIS REALLY EACH ACTION
                 true
             }
@@ -86,7 +86,7 @@ where
             <div class="impact",>
                 <div class="header",>{"IMPACT"}</div>
                 <div class="body",>
-                    <span class="time",>{&format!("Time: {}", self.time.clone())}</span>
+                <span class="time",>{&format!("Time: {}", self.time)}</span>
                     <ResourceContainer: resources=&self.resource_values,/>
                     <MapContainer: tiles=&self.tiles, onsignal=|msg| msg,/>
                 </div>

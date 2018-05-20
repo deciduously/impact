@@ -73,7 +73,7 @@ where
                 <div class="tile-title",>{&format!("{}", tile)}</div>
                 <div class="tile-art",>{&tile.art}</div>
                 <div class="tile-control",>
-                <ControlContainer: buttons=&tile.buttons, onsignal=|msg| Msg::ButtonPressed(msg),/>
+                <ControlContainer: buttons=&tile.buttons, onsignal=Msg::ButtonPressed,/>
                 </div>
             }
         };

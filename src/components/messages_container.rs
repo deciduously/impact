@@ -57,7 +57,7 @@ where
                     <span class="message-time",>
                         {&format!("{}", message.time)}
                     </span>
-                    {" "}{&format!("{}", message.content)}
+                    {" "}{message.content.to_string()}
                 </li>
             }
         };

@@ -69,7 +69,7 @@ where
     fn view(&self) -> Html<CTX, Self> {
         let view_button = |(button, enabled): (&Button, &bool)| {
             if *enabled {
-                let m = msg_from_actions(button.action());
+                let m = msg_from_actions(&button.action());
                 html! {
                     <span class="control-button",>
                         <button onclick= move |_| Msg::ButtonPressed(m.clone()),>{&format!("{}", button)}</button>
