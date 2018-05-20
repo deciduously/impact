@@ -24,4 +24,5 @@ impl fmt::Display for Tile {
     }
 }
 
-pub type Tiles = HashMap<u32, Tile>;
+pub type TileID = u32;
+pub type Tiles = HashMap<TileID, Tile>;

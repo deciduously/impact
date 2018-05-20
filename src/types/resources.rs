@@ -7,4 +7,4 @@ pub enum Resource {
     Power,
 }
 
-pub type Resources = HashMap<Resource, f64>;
+pub type Resources = HashMap<Resource, i64>;

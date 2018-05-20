@@ -1,6 +1,6 @@
 use super::super::{Model, Msg};
 use types::{buttons::Button, flags::{BoolFlag, FloatFlag, IntFlag}, messages::Message,
-            resources::Resource, tiles::Tile, time::Time};
+            resources::Resource, tiles::{Tile, TileID}, time::Time};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Action {
@@ -8,13 +8,13 @@ pub enum Action {
     AddMessage(String),
     SetBoolFlag(BoolFlag),
     ClearBoolFlag(BoolFlag),
-    SetResourceValue(Resource, i32),
-    AddResourceValue(Resource, i32),
-    SetIntFlag(IntFlag, i32),
-    SetFloatFlag(FloatFlag, i32),
-    EnableButton(Button, u32),
-    DisableButton(Button, u32),
-    AddTile(u32, Tile),
+    SetResourceValue(Resource, i64),
+    AddResourceValue(Resource, i64),
+    SetIntFlag(IntFlag, i64),
+    SetFloatFlag(FloatFlag, i64),
+    EnableButton(TileID, Button),
+    DisableButton(TileID, Button),
+    AddTile(TileID, Tile),
 }
 
 impl Action {
@@ -24,8 +24,8 @@ impl Action {
             Noop => {}
             AddResourceValue(resource, delta) => {
                 // TODO add min/maxes, and check here
-                let r = model.resource_values.entry(*resource).or_insert(0.0);
-                *r += *delta as f64;
+                let r = model.resource_values.entry(*resource).or_insert(0);
+                *r += *delta;
             }
             SetBoolFlag(f) => {
                 model.bool_flags.insert(*f, true);
@@ -34,7 +34,7 @@ impl Action {
                 model.bool_flags.insert(*f, false);
             }
             SetResourceValue(resource, amt) => {
-                model.resource_values.insert(*resource, *amt as f64);
+                model.resource_values.insert(*resource, *amt);
             }
             AddMessage(message) => {
                 model
@@ -47,19 +47,19 @@ impl Action {
             SetFloatFlag(f, amt) => {
                 model.float_flags.insert(*f, *amt as f64);
             }
-            EnableButton(button, tid) => {
+            EnableButton(tid, button) => {
                 // grab tile first
                 let mut t = model.tiles.get(tid).unwrap().clone();
                 t.buttons.insert(button.clone(), true);
                 model.tiles.insert(*tid, t); // push it back to the model
             }
-            DisableButton(button, tid) => {
+            DisableButton(tid, button) => {
                 let mut t = model.tiles.get(tid).unwrap().clone();
                 t.buttons.insert(button.clone(), false);
                 model.tiles.insert(*tid, t);
             }
-            AddTile(id, tile) => {
-                model.tiles.insert(*id, tile.clone());
+            AddTile(tid, tile) => {
+                model.tiles.insert(*tid, tile.clone());
             }
         };
     }
@@ -99,7 +99,7 @@ pub fn apply_timeactions(model: &mut Model) {
     // TODO where the heck should these live?
     // I don't want to reallocate the whole thing every time...
     let timeactions = vec![
-        TimeAction::new(1, Action::EnableButton(Button::ActivateOxygen, 0)),
+        TimeAction::new(1, Action::EnableButton(0, Button::ActivateOxygen)),
         TimeAction::new(15, Action::AddMessage("It's been 15 SECONDS".to_string())),
     ];
     for ta in timeactions.iter() {

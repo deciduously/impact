@@ -47,7 +47,7 @@ where
             tiles: Tiles::new(),
         };
         Action::AddTile(0, Tile::new("Ship".into(), ".::^::.".into())).perform(&mut ret);
-        Action::EnableButton(Button::Wait, 0).perform(&mut ret);
+        Action::EnableButton(0, Button::Wait).perform(&mut ret);
         ret
     }
 

@@ -54,7 +54,7 @@ where
 {
     // TODO individual Resources-ids and inner/chidren ids after scroller
     fn view(&self) -> Html<CTX, Self> {
-        let view_resource = |resource: (&Resource, &f64)| {
+        let view_resource = |resource: (&Resource, &i64)| {
             // TODO resource-delta
             html! {
                 <div class="resource",>

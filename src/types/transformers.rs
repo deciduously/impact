@@ -11,11 +11,10 @@ impl Transformer {
     pub fn effects(&self) -> Vec<Transformation> {
         use self::Transformation::*;
         match self {
-            Transformer::LeakyTank => vec![Consume(Resource::Oxygen, 10.0)],
-            Transformer::PowerRegen => vec![
-                Generate(Resource::Power, 2.0),
-                Consume(Resource::Oxygen, 1.0),
-            ],
+            Transformer::LeakyTank => vec![Consume(Resource::Oxygen, 10)],
+            Transformer::PowerRegen => {
+                vec![Generate(Resource::Power, 2), Consume(Resource::Oxygen, 1)]
+            }
         }
     }
 
@@ -27,8 +26,8 @@ impl Transformer {
 }
 
 pub enum Transformation {
-    Generate(Resource, f64),
-    Consume(Resource, f64),
+    Generate(Resource, i64),
+    Consume(Resource, i64),
 }
 
 impl Transformation {
@@ -36,10 +35,10 @@ impl Transformation {
         use self::Transformation::*;
         match self {
             Generate(resource, delta) => {
-                Action::AddResourceValue(*resource, *delta as i32).perform(model);
+                Action::AddResourceValue(*resource, *delta).perform(model);
             }
             Consume(resource, delta) => {
-                Action::AddResourceValue(*resource, -(*delta as i32)).perform(model);
+                Action::AddResourceValue(*resource, -(*delta)).perform(model);
             }
         }
     }

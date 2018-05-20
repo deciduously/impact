@@ -21,22 +21,22 @@ impl Button {
                 Action::SetBoolFlag(BoolFlag::LeakyTank),
                 Action::AddMessage("Oxygen Monitor Up".into()),
                 Action::AddMessage("Losing 10 Oxygen per second - tank leaky".into()),
-                Action::DisableButton(Button::ActivateOxygen, 0),
-                Action::EnableButton(Button::OpenToolbox, 0),
-                Action::EnableButton(Button::OpenDoor, 0),
+                Action::DisableButton(0, Button::ActivateOxygen),
+                Action::EnableButton(0, Button::OpenToolbox),
+                Action::EnableButton(0, Button::OpenDoor),
             ],
             Button::OpenToolbox => vec![
                 Action::AddMessage(
                     "You unceremoniously dump the toolbox contents all over the ship".into(),
                 ),
-                Action::EnableButton(Button::ApplyTape, 0),
-                Action::EnableButton(Button::FiddleControls, 0),
-                Action::DisableButton(Button::OpenToolbox, 0),
+                Action::EnableButton(0, Button::ApplyTape),
+                Action::EnableButton(0, Button::FiddleControls),
+                Action::DisableButton(0, Button::OpenToolbox),
             ],
             Button::ApplyTape => vec![
                 Action::ClearBoolFlag(BoolFlag::LeakyTank),
                 Action::AddMessage("Leak stopped - for now.".into()),
-                Action::DisableButton(Button::ApplyTape, 0),
+                Action::DisableButton(0, Button::ApplyTape),
             ],
             Button::FiddleControls => vec![
                 Action::SetResourceValue(Resource::Power, 1),
@@ -45,14 +45,14 @@ impl Button {
                 Action::AddMessage(
                     "Your fuel cells are on and recharging from your excess oxygen".into(),
                 ),
-                Action::DisableButton(Button::FiddleControls, 0),
+                Action::DisableButton(0, Button::FiddleControls),
             ],
             Button::OpenDoor => vec![
                 Action::AddMessage("You push the airlock open and immediately DIE.".into()),
                 Action::AddMessage("Just kidding - everything is fine.".into()),
                 Action::SetResourceValue(Resource::Chutzpah, 50),
                 Action::AddTile(1, Tile::new("Field".into(), ".......!!!!!.....".into())),
-                Action::DisableButton(Button::OpenDoor, 0),
+                Action::DisableButton(0, Button::OpenDoor),
             ],
         }
     }
@@ -78,5 +78,3 @@ pub type Buttons = HashMap<Button, bool>;
 //    match b {
 //   }
 //}
-
-// tiles will work similar but also pass up their ID along with the Action?
