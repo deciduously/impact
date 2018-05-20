@@ -1,6 +1,6 @@
 use super::super::{Model, Msg};
 use types::{buttons::Button, flags::{BoolFlag, FloatFlag, IntFlag}, messages::Message,
-            resources::Resource, tiles::{Tile, TileID}, time::Time};
+            resources::Resource, tiles::{Tile, TileID}, time::Time, transformers::Transformation};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Action {
@@ -10,6 +10,7 @@ pub enum Action {
     ClearBoolFlag(BoolFlag),
     SetResourceValue(Resource, i64),
     AddResourceValue(Resource, i64),
+    AddResourceDelta(Resource, i64),
     SetIntFlag(IntFlag, i64),
     SetFloatFlag(FloatFlag, i64),
     EnableButton(TileID, Button),
@@ -29,12 +30,33 @@ impl Action {
             }
             SetBoolFlag(f) => {
                 model.bool_flags.insert(*f, true);
+                //apply delta
+                if let Some(tf) = f.transformer() {
+                    for eff in tf.effects() {
+                        match eff {
+                            Transformation::Generate(r, delta) => {
+                                Action::AddResourceDelta(r, delta).perform(model);
+                            }
+                            Transformation::Consume(r, delta) => {
+                                Action::AddResourceDelta(r, -delta).perform(model);
+                            }
+                        }
+                    }
+                }
             }
             ClearBoolFlag(f) => {
                 model.bool_flags.insert(*f, false);
+                //remove delta
             }
             SetResourceValue(resource, amt) => {
                 model.resource_values.insert(*resource, *amt);
+            }
+            AddResourceDelta(resource, delta) => {
+                let rd = model
+                    .int_flags
+                    .entry(IntFlag::ResourceDelta(*resource))
+                    .or_insert(0);
+                *rd += *delta;
             }
             AddMessage(message) => {
                 model

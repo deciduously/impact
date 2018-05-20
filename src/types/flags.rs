@@ -1,5 +1,5 @@
 use std::collections::HashMap;
-use types::resources::Resource;
+use types::{resources::Resource, transformers::Transformer};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum BoolFlag {
@@ -8,11 +8,22 @@ pub enum BoolFlag {
     PowerRegen,
 }
 
+impl BoolFlag {
+    pub fn transformer(&self) -> Option<Transformer> {
+        use self::BoolFlag::*;
+        match self {
+            OxygenMonitor => None,
+            LeakyTank => Some(Transformer::LeakyTank),
+            PowerRegen => Some(Transformer::PowerRegen),
+        }
+    }
+}
+
 pub type BoolFlags = HashMap<BoolFlag, bool>;
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum IntFlag {
-    ResourceDelta(Resource, i64),
+    ResourceDelta(Resource),
 }
 
 pub type IntFlags = HashMap<IntFlag, i64>;

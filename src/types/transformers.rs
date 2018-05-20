@@ -1,5 +1,5 @@
 use super::super::Model;
-use types::{actions::Action, flags::BoolFlag, resources::Resource};
+use types::{actions::Action, resources::Resource};
 
 // Each transformer should have a corresponding BoolFlag
 pub enum Transformer {
@@ -45,23 +45,13 @@ impl Transformation {
 }
 
 pub fn apply_transformers(model: &mut Model) {
-    let bfs = model.bool_flags.clone(); // GROSS
+    let bfs = model.bool_flags.clone(); // stop cloning, Ben
 
     for (f, enabled) in bfs {
-        match f {
-            // this doesn't need to be a match - you're doing the same thing for any Transformer
-            // how do I compare across enums?
-            BoolFlag::LeakyTank => {
-                if enabled {
-                    Transformer::LeakyTank.apply_transformer(model);
-                }
+        if enabled {
+            if let Some(tf) = f.transformer() {
+                tf.apply_transformer(model);
             }
-            BoolFlag::PowerRegen => {
-                if enabled {
-                    Transformer::PowerRegen.apply_transformer(model);
-                }
-            }
-            _ => {} // Not all BoolFlags correspond to transformers - skip 'em
         }
     }
 }
