@@ -34,7 +34,7 @@ impl<CTX> Component<CTX> for MapContainer
 where
     CTX: AsMut<ConsoleService>,
 {
-    type Msg = Msg;
+    type Message = Msg;
     type Properties = Props;
 
     fn create(props: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
@@ -45,7 +45,7 @@ where
         }
     }
 
-    fn update(&mut self, msg: Self::Msg, _env: &mut Env<CTX, Self>) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message, _env: &mut Env<CTX, Self>) -> ShouldRender {
         match msg {
             Msg::ButtonPressed(msg) => {
                 if let Some(ref mut callback) = self.onsignal {

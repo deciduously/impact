@@ -26,7 +26,7 @@ impl<CTX> Component<CTX> for MessagesContainer
 where
     CTX: AsMut<ConsoleService>,
 {
-    type Msg = Msg;
+    type Message = Msg;
     type Properties = Props;
 
     fn create(props: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
@@ -36,7 +36,7 @@ where
         }
     }
 
-    fn update(&mut self, _msg: Self::Msg, _env: &mut Env<CTX, Self>) -> ShouldRender {
+    fn update(&mut self, _msg: Self::Message, _env: &mut Env<CTX, Self>) -> ShouldRender {
         true
     }
 
