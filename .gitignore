@@ -7,3 +7,4 @@ static/*.css
 .#*
 .vscode*
 /rls
+*.log
