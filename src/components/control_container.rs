@@ -1,4 +1,7 @@
-use types::{actions::msg_from_actions, buttons::{Button, Buttons}};
+use types::{
+    actions::msg_from_actions,
+    buttons::{Button, Buttons},
+};
 use yew::prelude::*;
 use yew::services::console::ConsoleService;
 
@@ -72,7 +75,7 @@ where
                 let m = msg_from_actions(&button.action());
                 html! {
                     <span class="control-button",>
-                        <button onclick= move |_| Msg::ButtonPressed(m.clone()),>{&format!("{}", button)}</button>
+                        <input class="button", onclick=|_| Msg::ButtonPressed(m.clone()),>{&format!("{}", button)}</input>
                     </span>
                 }
             } else {
