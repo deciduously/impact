@@ -1,14 +1,12 @@
 use types::resources::{Resource, Resources};
-use yew::prelude::*;
-use yew::services::console::ConsoleService;
+use yew::prelude::{Component, ComponentLink, Html, Renderable, ShouldRender};
 
 pub struct ResourceContainer {
     title: String,
     resources: Resources,
 }
 
-pub enum Msg {
-}
+pub enum Msg {}
 
 #[derive(PartialEq, Clone)]
 pub struct Props {
@@ -23,36 +21,30 @@ impl Default for Props {
     }
 }
 
-impl<CTX> Component<CTX> for ResourceContainer
-where
-    CTX: AsMut<ConsoleService>,
-{
+impl Component for ResourceContainer {
     type Message = Msg;
     type Properties = Props;
 
-    fn create(props: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
+    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self {
         ResourceContainer {
             title: "Resources".to_string(),
             resources: props.resources,
         }
     }
 
-    fn update(&mut self, _msg: Self::Message, _env: &mut Env<CTX, Self>) -> ShouldRender {
+    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
         true
     }
 
-    fn change(&mut self, props: Self::Properties, _: &mut Env<CTX, Self>) -> ShouldRender {
+    fn change(&mut self, props: Self::Properties) -> ShouldRender {
         self.resources = props.resources;
         true
     }
 }
 
-impl<CTX> Renderable<CTX, ResourceContainer> for ResourceContainer
-where
-    CTX: AsMut<ConsoleService> + 'static,
-{
+impl Renderable<ResourceContainer> for ResourceContainer {
     // TODO individual Resources-ids and inner/chidren ids after scroller
-    fn view(&self) -> Html<CTX, Self> {
+    fn view(&self) -> Html<Self> {
         let view_resource = |(resource, (amt, delta)): (&Resource, &(i64, i64))| {
             // TODO resource-delta
             html! {

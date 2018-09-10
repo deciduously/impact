@@ -1,6 +1,5 @@
 use types::messages::Message;
-use yew::prelude::*;
-use yew::services::console::ConsoleService;
+use yew::prelude::{Component, ComponentLink, Html, Renderable, ShouldRender};
 
 pub struct MessagesContainer {
     title: String,
@@ -22,35 +21,29 @@ impl Default for Props {
     }
 }
 
-impl<CTX> Component<CTX> for MessagesContainer
-where
-    CTX: AsMut<ConsoleService>,
-{
+impl Component for MessagesContainer {
     type Message = Msg;
     type Properties = Props;
 
-    fn create(props: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
+    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self {
         MessagesContainer {
             title: "Messages".into(),
             messages: props.messages,
         }
     }
 
-    fn update(&mut self, _msg: Self::Message, _env: &mut Env<CTX, Self>) -> ShouldRender {
+    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
         true
     }
 
-    fn change(&mut self, props: Self::Properties, _: &mut Env<CTX, Self>) -> ShouldRender {
+    fn change(&mut self, props: Self::Properties) -> ShouldRender {
         self.messages = props.messages;
         true
     }
 }
 
-impl<CTX> Renderable<CTX, MessagesContainer> for MessagesContainer
-where
-    CTX: AsMut<ConsoleService> + 'static,
-{
-    fn view(&self) -> Html<CTX, Self> {
+impl Renderable<MessagesContainer> for MessagesContainer {
+    fn view(&self) -> Html<Self> {
         let view_message = |message: &Message| {
             html! {
                 <li>

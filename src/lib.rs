@@ -5,12 +5,21 @@ extern crate yew;
 mod components;
 mod types;
 
-use components::{map_container::MapContainer, messages_container::MessagesContainer,
-                 resource_container::ResourceContainer};
-use types::{actions::{apply_timeactions, Action}, buttons::Button, flags::BoolFlags,
-            messages::Message, resources::Resources, tiles::{Tile, Tiles}, time::Time,
-            transformers::apply_transformers};
-use yew::{prelude::*, services::console::ConsoleService};
+use components::{
+    map_container::MapContainer, messages_container::MessagesContainer,
+    resource_container::ResourceContainer,
+};
+use types::{
+    actions::{apply_timeactions, Action},
+    buttons::Button,
+    flags::BoolFlags,
+    messages::Message,
+    resources::Resources,
+    tiles::{Tile, Tiles},
+    time::Time,
+    transformers::apply_transformers,
+};
+use yew::prelude::{Component, ComponentLink, Html, Renderable, ShouldRender};
 
 pub struct Model {
     time: Time,
@@ -29,14 +38,11 @@ pub enum Msg {
     Bulk(Vec<Msg>),
 }
 
-impl<CTX> Component<CTX> for Model
-where
-    CTX: AsMut<ConsoleService>,
-{
+impl Component for Model {
     type Message = Msg;
     type Properties = ();
 
-    fn create(_: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
+    fn create(_: Self::Properties, _: ComponentLink<Self>) -> Self {
         let mut ret = Model {
             time: Time::new(),
             resource_values: Resources::new(),
@@ -51,25 +57,22 @@ where
         ret
     }
 
-    fn update(&mut self, msg: Self::Message, env: &mut Env<CTX, Self>) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::Tick => {
-                env.as_mut().log("tick");
                 self.time.increment();
                 apply_transformers(self);
                 apply_timeactions(self);
                 true
             }
             Msg::PerformAction(action) => {
-                env.as_mut().log(&format!("action: {:?}", action));
                 action.perform(self);
-                self.update(Msg::Tick, env); // TODO - THIS IS A CORE MECHANIC - IS THIS REALLY EACH ACTION
+                self.update(Msg::Tick); // TODO - THIS IS A CORE MECHANIC - IS THIS REALLY EACH ACTION
                 true
             }
             Msg::Bulk(list) => {
                 for msg in list {
-                    self.update(msg, env);
-                    env.as_mut().log("Bulk action");
+                    self.update(msg);
                 }
                 true
             }
@@ -77,11 +80,8 @@ where
     }
 }
 
-impl<CTX> Renderable<CTX, Model> for Model
-where
-    CTX: AsMut<ConsoleService> + 'static,
-{
-    fn view(&self) -> Html<CTX, Self> {
+impl Renderable<Model> for Model {
+    fn view(&self) -> Html<Self> {
         html! {
             <div class="impact",>
                 <div class="header",>{"IMPACT"}</div>

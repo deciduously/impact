@@ -1,7 +1,6 @@
 use components::control_container::ControlContainer;
 use types::tiles::{Tile, Tiles};
-use yew::prelude::*;
-use yew::services::console::ConsoleService;
+use yew::prelude::{Callback, Component, ComponentLink, Html, Renderable, ShouldRender};
 
 type ImpactMsg = super::super::Msg;
 
@@ -30,14 +29,11 @@ impl Default for Props {
     }
 }
 
-impl<CTX> Component<CTX> for MapContainer
-where
-    CTX: AsMut<ConsoleService>,
-{
+impl Component for MapContainer {
     type Message = Msg;
     type Properties = Props;
 
-    fn create(props: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
+    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self {
         MapContainer {
             title: "Map".into(),
             tiles: props.tiles,
@@ -45,7 +41,7 @@ where
         }
     }
 
-    fn update(&mut self, msg: Self::Message, _env: &mut Env<CTX, Self>) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::ButtonPressed(msg) => {
                 if let Some(ref mut callback) = self.onsignal {
@@ -56,18 +52,15 @@ where
         false
     }
 
-    fn change(&mut self, props: Self::Properties, _: &mut Env<CTX, Self>) -> ShouldRender {
+    fn change(&mut self, props: Self::Properties) -> ShouldRender {
         self.tiles = props.tiles;
         self.onsignal = props.onsignal;
         true
     }
 }
 
-impl<CTX> Renderable<CTX, MapContainer> for MapContainer
-where
-    CTX: AsMut<ConsoleService> + 'static,
-{
-    fn view(&self) -> Html<CTX, Self> {
+impl Renderable<MapContainer> for MapContainer {
+    fn view(&self) -> Html<Self> {
         let view_tile = |(_id, tile): (&u32, &Tile)| {
             html! {
                 <div class="tile-title",>{&format!("{}", tile)}</div>

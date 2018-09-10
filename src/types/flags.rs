@@ -9,7 +9,7 @@ pub enum BoolFlag {
 }
 
 impl BoolFlag {
-    pub fn transformer(&self) -> Option<Transformer> {
+    pub fn transformer(self) -> Option<Transformer> {
         use self::BoolFlag::*;
         match self {
             OxygenMonitor => None,

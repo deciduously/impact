@@ -1,6 +1,13 @@
 use super::super::{Model, Msg};
-use types::{buttons::Button, flags::BoolFlag, messages::Message, resources::Resource,
-            tiles::{Tile, TileID}, time::Time, transformers::Transformation};
+use types::{
+    buttons::Button,
+    flags::BoolFlag,
+    messages::Message,
+    resources::Resource,
+    tiles::{Tile, TileID},
+    time::Time,
+    transformers::Transformation,
+};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum Action {
@@ -72,7 +79,7 @@ impl Action {
             AddMessage(message) => {
                 model
                     .messages
-                    .push(Message::new(message.to_string(), &model.time));
+                    .push(Message::new(message.to_string(), model.time));
             }
             //SetIntFlag(f, amt) => {
             //    model.int_flags.insert(*f, *amt);

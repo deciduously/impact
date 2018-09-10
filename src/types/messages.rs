@@ -8,11 +8,8 @@ pub struct Message {
 }
 
 impl Message {
-    pub fn new(content: String, time: &Time) -> Self {
-        Message {
-            content,
-            time: *time,
-        }
+    pub fn new(content: String, time: Time) -> Self {
+        Message { content, time }
     }
 }
 

@@ -1,4 +1,4 @@
-use std::{fmt, collections::HashMap};
+use std::{collections::HashMap, fmt};
 use types::{actions::Action, flags::BoolFlag, resources::Resource, tiles::Tile};
 
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]

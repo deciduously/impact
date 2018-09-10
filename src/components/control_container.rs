@@ -2,8 +2,7 @@ use types::{
     actions::msg_from_actions,
     buttons::{Button, Buttons},
 };
-use yew::prelude::*;
-use yew::services::console::ConsoleService;
+use yew::prelude::{Callback, Component, ComponentLink, Html, Renderable, ShouldRender};
 
 type ImpactMsg = super::super::Msg;
 
@@ -32,14 +31,11 @@ impl Default for Props {
     }
 }
 
-impl<CTX> Component<CTX> for ControlContainer
-where
-    CTX: AsMut<ConsoleService>,
-{
+impl Component for ControlContainer {
     type Message = Msg;
     type Properties = Props;
 
-    fn create(props: Self::Properties, _: &mut Env<CTX, Self>) -> Self {
+    fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self {
         ControlContainer {
             title: "Control".to_string(),
             buttons: props.buttons,
@@ -47,7 +43,7 @@ where
         }
     }
 
-    fn update(&mut self, msg: Self::Message, _env: &mut Env<CTX, Self>) -> ShouldRender {
+    fn update(&mut self, msg: Self::Message) -> ShouldRender {
         match msg {
             Msg::ButtonPressed(msg) => {
                 if let Some(ref mut callback) = self.onsignal {
@@ -58,24 +54,21 @@ where
         false
     }
 
-    fn change(&mut self, props: Self::Properties, _: &mut Env<CTX, Self>) -> ShouldRender {
+    fn change(&mut self, props: Self::Properties) -> ShouldRender {
         self.buttons = props.buttons;
         self.onsignal = props.onsignal;
         true
     }
 }
 
-impl<CTX> Renderable<CTX, ControlContainer> for ControlContainer
-where
-    CTX: AsMut<ConsoleService> + 'static,
-{
-    fn view(&self) -> Html<CTX, Self> {
+impl Renderable<ControlContainer> for ControlContainer {
+    fn view(&self) -> Html<Self> {
         let view_button = |(button, enabled): (&Button, &bool)| {
             if *enabled {
                 let m = msg_from_actions(&button.action());
                 html! {
                     <span class="control-button",>
-                        <input class="button", onclick=|_| Msg::ButtonPressed(m.clone()),>{&format!("{}", button)}</input>
+                        <button onclick=|_| Msg::ButtonPressed(m.clone()),>{&format!("{}", *button)}</button>
                     </span>
                 }
             } else {

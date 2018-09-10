@@ -13,5 +13,5 @@ path = "src/lib.rs"
 
 [dependencies]
 
-stdweb = "*"
-yew = "*"
+stdweb = "0.4"
+yew = { git = "https://github.com/DenisKolodin/yew" }

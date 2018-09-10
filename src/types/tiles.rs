@@ -1,4 +1,4 @@
-use std::{fmt, collections::HashMap};
+use std::{collections::HashMap, fmt};
 use types::buttons::Buttons;
 
 #[derive(Clone, Debug, PartialEq, Eq)]
