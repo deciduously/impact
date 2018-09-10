@@ -86,12 +86,15 @@ impl Renderable<Model> for Model {
             <div class="impact",>
                 <div class="header",>{"IMPACT"}</div>
                 <div class="body",>
-                <span class="time",>{&format!("Time: {}", self.time)}</span>
-                    <ResourceContainer: resources=&self.resource_values,/>
-                    <MapContainer: tiles=&self.tiles, onsignal=|msg| msg,/>
+                  <span class="time",>{&format!("Time: {}", self.time)}</span>
+                   <ResourceContainer: resources=&self.resource_values,/>
+                   <MapContainer: tiles=&self.tiles, onsignal=|msg| msg,/>
                 </div>
                 <MessagesContainer: messages=&self.messages,/>
             </div>
+            <footer>
+                    <a href="http://deciduously.com",>{"deciduously.com"}</a>{ " - " }<a href="https://github.com/deciduously/impact",>{"source"}</a>
+            </footer>
         }
     }
 }
