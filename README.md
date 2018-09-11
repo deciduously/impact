@@ -3,6 +3,10 @@ An incremental game skeleton. Very much WIP.
 
 It's incremental, but not realtime.  For now, a second passes each time an Action happens, which is not ideal...bulk actions will take way too long.  Eventually I will fine tune this so that each action has a duration, meaning adding messages to the console won't clog it up.
 
+![screenhot](https://i.imgur.com/siTfdFc.png).
+
+Play the first thrilling 30 seconds [here](http://deciduously.com/static/extern/impact/index.html).
+
 ## Requirements
 
 * [Rust](https://www.rust-lang.org/en-US/) nightly 1.27.0+ with the `wasm32-unknown-unknown` target.
