@@ -5,7 +5,7 @@ It's incremental, but not realtime.  For now, a second passes each time an Actio
 
 ![screenhot](https://i.imgur.com/siTfdFc.png).
 
-Play the first thrilling 30 seconds [here](http://deciduously.com/static/extern/impact/index.html).
+Play the first thrilling 30 seconds [here](http://deciduously.com/impact).
 
 ## Requirements
 
