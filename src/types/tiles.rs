@@ -1,5 +1,7 @@
 use std::{collections::HashMap, fmt};
-use types::buttons::Buttons;
+use types::buttons::{ButtonID, Buttons};
+
+// Tiles still hold buttons, but all buttons are displayed in a global action bar
 
 #[derive(Clone, Debug, PartialEq, Eq)]
 pub struct Tile {
@@ -9,12 +11,8 @@ pub struct Tile {
 }
 
 impl Tile {
-    pub fn new(name: String, art: String) -> Self {
-        Tile {
-            name,
-            art,
-            buttons: Buttons::new(),
-        }
+    pub fn new(name: String, art: String, buttons: Vec<ButtonID>) -> Self {
+        Tile { name, art, buttons }
     }
 }
 
@@ -26,3 +24,15 @@ impl fmt::Display for Tile {
 
 pub type TileID = u32;
 pub type Tiles = HashMap<TileID, Tile>;
+
+pub fn defined_tiles(id: TileID) -> Option<Tile> {
+    match id {
+        0 => Some(Tile::new("Ship".into(), "..::^::..".into(), vec![0])),
+        1 => Some(Tile::new(
+            "Field".into(),
+            ".......!!!!!.....".into(),
+            Vec::new(),
+        )),
+        _ => None,
+    }
+}

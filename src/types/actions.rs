@@ -1,10 +1,10 @@
 use super::super::{Model, Msg};
 use types::{
-    buttons::Button,
+    buttons::{Button, ButtonID},
     flags::BoolFlag,
     messages::Message,
     resources::Resource,
-    tiles::{Tile, TileID},
+    tiles::{defined_tiles, TileID},
     time::Time,
     transformers::Transformation,
 };
@@ -20,9 +20,9 @@ pub enum Action {
     AddResourceDelta(Resource, i64),
     //SetIntFlag(IntFlag, i64),
     //SetFloatFlag(FloatFlag, i64),
-    EnableButton(TileID, Button),
-    DisableButton(TileID, Button),
-    AddTile(TileID, Tile),
+    EnableButton(ButtonID),
+    DisableButton(ButtonID),
+    AddTile(TileID),
 }
 
 impl Action {
@@ -87,19 +87,31 @@ impl Action {
             //SetFloatFlag(f, amt) => {
             //    model.float_flags.insert(*f, *amt as f64);
             //}
-            EnableButton(tid, button) => {
-                // grab tile first
-                let mut t = model.tiles[tid].clone();
-                t.buttons.insert(button.clone(), true);
-                model.tiles.insert(*tid, t); // push it back to the model
+            EnableButton(bid) => {
+                if Button::by_index(*bid).is_some() {
+                    model.buttons.push(*bid);
+                }
             }
-            DisableButton(tid, button) => {
-                let mut t = model.tiles[tid].clone();
-                t.buttons.insert(button.clone(), false);
-                model.tiles.insert(*tid, t);
+            DisableButton(bid) => {
+                if Button::by_index(*bid).is_some() {
+                    let mut button_idx: i32 = -1;
+                    for i in 0..model.buttons.len() {
+                        if model.buttons[i as usize] == *bid {
+                            button_idx = i as i32;
+                        }
+                    }
+                    if button_idx >= 0 {
+                        model.buttons.remove(button_idx as usize);
+                    }
+                }
             }
-            AddTile(tid, tile) => {
-                model.tiles.insert(*tid, tile.clone());
+            AddTile(tid) => {
+                let new_tile = defined_tiles(*tid).unwrap();
+                model.tiles.insert(*tid, new_tile.clone());
+                let new_buttons = new_tile.buttons.clone();
+                for b in new_buttons {
+                    model.buttons.push(b);
+                }
             }
         };
     }
@@ -139,7 +151,7 @@ pub fn apply_timeactions(model: &mut Model) {
     // TODO where the heck should these live?
     // I don't want to reallocate the whole thing every time...
     let timeactions = vec![
-        TimeAction::new(1, Action::EnableButton(0, Button::ActivateOxygen)),
+        TimeAction::new(1, Action::EnableButton(1)),
         TimeAction::new(15, Action::AddMessage("It's been 15 SECONDS".to_string())),
     ];
     for ta in timeactions.iter() {

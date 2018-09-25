@@ -1,4 +1,3 @@
-use components::control_container::ControlContainer;
 use types::tiles::{Tile, Tiles};
 use yew::prelude::{Callback, Component, ComponentLink, Html, Renderable, ShouldRender};
 
@@ -10,9 +9,7 @@ pub struct MapContainer {
     onsignal: Option<Callback<ImpactMsg>>,
 }
 
-pub enum Msg {
-    ButtonPressed(ImpactMsg),
-}
+pub enum Msg {}
 
 #[derive(PartialEq, Clone)]
 pub struct Props {
@@ -41,15 +38,8 @@ impl Component for MapContainer {
         }
     }
 
-    fn update(&mut self, msg: Self::Message) -> ShouldRender {
-        match msg {
-            Msg::ButtonPressed(msg) => {
-                if let Some(ref mut callback) = self.onsignal {
-                    callback.emit(msg);
-                }
-            }
-        }
-        false
+    fn update(&mut self, _msg: Self::Message) -> ShouldRender {
+        true
     }
 
     fn change(&mut self, props: Self::Properties) -> ShouldRender {
@@ -62,12 +52,11 @@ impl Component for MapContainer {
 impl Renderable<MapContainer> for MapContainer {
     fn view(&self) -> Html<Self> {
         let view_tile = |(_id, tile): (&u32, &Tile)| {
+            // Tiles arent going to have controls of their own
+            // Clean this out before doing anything else.
             html! {
                 <div class="tile-title",>{&format!("{}", tile)}</div>
                 <div class="tile-art",>{&tile.art}</div>
-                <div class="tile-control",>
-                <ControlContainer: buttons=&tile.buttons, onsignal=Msg::ButtonPressed,/>
-                </div>
             }
         };
         html! {

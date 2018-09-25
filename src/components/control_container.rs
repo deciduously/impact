@@ -1,6 +1,6 @@
 use types::{
     actions::msg_from_actions,
-    buttons::{Button, Buttons},
+    buttons::{Button, ButtonID, Buttons},
 };
 use yew::prelude::{Callback, Component, ComponentLink, Html, Renderable, ShouldRender};
 
@@ -63,18 +63,13 @@ impl Component for ControlContainer {
 
 impl Renderable<ControlContainer> for ControlContainer {
     fn view(&self) -> Html<Self> {
-        let view_button = |(button, enabled): (&Button, &bool)| {
-            if *enabled {
-                let m = msg_from_actions(&button.action());
-                html! {
-                    <span class="control-button",>
-                        <button onclick=|_| Msg::ButtonPressed(m.clone()),>{&format!("{}", *button)}</button>
-                    </span>
-                }
-            } else {
-                html! {
-                    <div></div>
-                }
+        let view_button = |bid: &ButtonID| {
+            let button = Button::by_index(*bid).unwrap();
+            let m = msg_from_actions(&button.action());
+            html! {
+                <span class="control-button",>
+                    <button onclick=|_| Msg::ButtonPressed(m.clone()),>{&format!("{}", button)}</button>
+                </span>
             }
         };
         // issue 121 workaround for multiple classes

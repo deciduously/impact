@@ -6,16 +6,16 @@ mod components;
 mod types;
 
 use components::{
-    map_container::MapContainer, messages_container::MessagesContainer,
-    resource_container::ResourceContainer,
+    control_container::ControlContainer, map_container::MapContainer,
+    messages_container::MessagesContainer, resource_container::ResourceContainer,
 };
 use types::{
     actions::{apply_timeactions, Action},
-    buttons::Button,
+    buttons::Buttons,
     flags::BoolFlags,
     messages::Message,
     resources::Resources,
-    tiles::{Tile, Tiles},
+    tiles::Tiles,
     time::Time,
     transformers::apply_transformers,
 };
@@ -29,6 +29,7 @@ pub struct Model {
     //int_flags: IntFlags,
     //float_flags: FloatFlags,
     tiles: Tiles,
+    buttons: Buttons,
 }
 
 #[derive(Debug, Clone)]
@@ -51,9 +52,9 @@ impl Component for Model {
             //int_flags: IntFlags::new(),
             //float_flags: FloatFlags::new(),
             tiles: Tiles::new(),
+            buttons: Buttons::new(),
         };
-        Action::AddTile(0, Tile::new("Ship".into(), ".::^::.".into())).perform(&mut ret);
-        Action::EnableButton(0, Button::Wait).perform(&mut ret);
+        Action::AddTile(0).perform(&mut ret);
         ret
     }
 
@@ -88,7 +89,8 @@ impl Renderable<Model> for Model {
                 <div class="body",>
                   <span class="time",>{&format!("Time: {}", self.time)}</span>
                    <ResourceContainer: resources=&self.resource_values,/>
-                   <MapContainer: tiles=&self.tiles, onsignal=|msg| msg,/>
+                   <MapContainer: tiles=&self.tiles,/>
+                   <ControlContainer: buttons=&self.buttons, onsignal=|msg| msg,/>
                 </div>
                 <MessagesContainer: messages=&self.messages,/>
             </div>

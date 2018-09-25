@@ -1,7 +1,11 @@
-use std::{collections::HashMap, fmt};
-use types::{actions::Action, flags::BoolFlag, resources::Resource, tiles::Tile};
+use std::fmt;
+use types::{actions::Action, flags::BoolFlag, resources::Resource};
 
-#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+// These are your "actions available"
+
+pub type ButtonID = u32;
+
+#[derive(Copy, Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Button {
     Wait,
     ActivateOxygen,
@@ -12,8 +16,8 @@ pub enum Button {
 }
 
 impl Button {
-    pub fn action(&self) -> Vec<Action> {
-        match *self {
+    pub fn action(self) -> Vec<Action> {
+        match self {
             Button::Wait => vec![Action::Noop],
             Button::ActivateOxygen => vec![
                 Action::SetBoolFlag(BoolFlag::OxygenMonitor),
@@ -21,22 +25,22 @@ impl Button {
                 Action::SetBoolFlag(BoolFlag::LeakyTank),
                 Action::AddMessage("Oxygen Monitor Up".into()),
                 Action::AddMessage("Losing 10 Oxygen per second - tank leaky".into()),
-                Action::DisableButton(0, Button::ActivateOxygen),
-                Action::EnableButton(0, Button::OpenToolbox),
-                Action::EnableButton(0, Button::OpenDoor),
+                Action::DisableButton(1),
+                Action::EnableButton(2),
+                Action::EnableButton(5),
             ],
             Button::OpenToolbox => vec![
                 Action::AddMessage(
                     "You unceremoniously dump the toolbox contents all over the ship".into(),
                 ),
-                Action::EnableButton(0, Button::ApplyTape),
-                Action::EnableButton(0, Button::FiddleControls),
-                Action::DisableButton(0, Button::OpenToolbox),
+                Action::EnableButton(3),
+                Action::EnableButton(4),
+                Action::DisableButton(2),
             ],
             Button::ApplyTape => vec![
                 Action::ClearBoolFlag(BoolFlag::LeakyTank),
                 Action::AddMessage("Leak stopped - for now.".into()),
-                Action::DisableButton(0, Button::ApplyTape),
+                Action::DisableButton(3),
             ],
             Button::FiddleControls => vec![
                 Action::SetResourceValue(Resource::Power, 1),
@@ -45,15 +49,28 @@ impl Button {
                 Action::AddMessage(
                     "Your fuel cells are on and recharging from your excess oxygen".into(),
                 ),
-                Action::DisableButton(0, Button::FiddleControls),
+                Action::DisableButton(4),
             ],
             Button::OpenDoor => vec![
                 Action::AddMessage("You push the airlock open and immediately DIE.".into()),
                 Action::AddMessage("Just kidding - everything is fine.".into()),
                 Action::SetResourceValue(Resource::Chutzpah, 50),
-                Action::AddTile(1, Tile::new("Field".into(), ".......!!!!!.....".into())),
-                Action::DisableButton(0, Button::OpenDoor),
+                Action::AddTile(1),
+                Action::DisableButton(5),
             ],
+        }
+    }
+
+    pub fn by_index(idx: ButtonID) -> Option<Button> {
+        use self::Button::*;
+        match idx {
+            0 => Some(Wait),
+            1 => Some(ActivateOxygen),
+            2 => Some(OpenToolbox),
+            3 => Some(ApplyTape),
+            4 => Some(FiddleControls),
+            5 => Some(OpenDoor),
+            _ => None,
         }
     }
 }
@@ -72,7 +89,7 @@ impl fmt::Display for Button {
     }
 }
 
-pub type Buttons = HashMap<Button, bool>;
+pub type Buttons = Vec<ButtonID>;
 
 //fn button_cost(b: Button) -> Option<(Resource, i32)> {
 //    match b {
