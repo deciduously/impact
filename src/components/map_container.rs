@@ -1,11 +1,11 @@
-use types::tiles::{Tile, Tiles};
+use types::tiles::{Tile};
 use yew::prelude::{Callback, Component, ComponentLink, Html, Renderable, ShouldRender};
 
 type ImpactMsg = super::super::Msg;
 
 pub struct MapContainer {
     title: String,
-    tiles: Tiles,
+    tile: Tile,
     onsignal: Option<Callback<ImpactMsg>>,
 }
 
@@ -13,14 +13,14 @@ pub enum Msg {}
 
 #[derive(PartialEq, Clone)]
 pub struct Props {
-    pub tiles: Tiles,
+    pub tile: Tile,
     pub onsignal: Option<Callback<ImpactMsg>>,
 }
 
 impl Default for Props {
     fn default() -> Self {
         Props {
-            tiles: Tiles::new(),
+            tile: Tile::default(),
             onsignal: None,
         }
     }
@@ -33,7 +33,7 @@ impl Component for MapContainer {
     fn create(props: Self::Properties, _: ComponentLink<Self>) -> Self {
         MapContainer {
             title: "Map".into(),
-            tiles: props.tiles,
+            tile: props.tile,
             onsignal: props.onsignal,
         }
     }
@@ -43,7 +43,7 @@ impl Component for MapContainer {
     }
 
     fn change(&mut self, props: Self::Properties) -> ShouldRender {
-        self.tiles = props.tiles;
+        self.tile = props.tile;
         self.onsignal = props.onsignal;
         true
     }
@@ -51,7 +51,7 @@ impl Component for MapContainer {
 
 impl Renderable<MapContainer> for MapContainer {
     fn view(&self) -> Html<Self> {
-        let view_tile = |(_id, tile): (&u32, &Tile)| {
+        let view_tile = |tile: &Tile| {
             // Tiles arent going to have controls of their own
             // Clean this out before doing anything else.
             html! {
@@ -63,7 +63,7 @@ impl Renderable<MapContainer> for MapContainer {
             <div class=("container", "container-map"),>
                 <div class="title",>{&self.title}</div>
                 <div class="scroller",>
-                    { for self.tiles.iter().map(view_tile) }
+                    { view_tile(&self.tile) }
                 </div>
             </div>
         }

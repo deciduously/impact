@@ -16,6 +16,12 @@ impl Tile {
     }
 }
 
+impl Default for Tile {
+    fn default() -> Self {
+        Self { name: "Wasteland".into(), art: "........".into(), buttons: vec![] }
+    }
+}
+
 impl fmt::Display for Tile {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         writeln!(f, "{}", self.name)

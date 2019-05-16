@@ -6,14 +6,15 @@ mod components;
 mod types;
 
 use components::{
-    control_container::ControlContainer, map_container::MapContainer,
-    messages_container::MessagesContainer, resource_container::ResourceContainer,
+    control_container::ControlContainer, messages_container::MessagesContainer,
+    player_container::PlayerContainer, resource_container::ResourceContainer,
 };
 use types::{
     actions::{apply_timeactions, Action},
     buttons::Buttons,
     flags::BoolFlags,
     messages::Message,
+    player::Player,
     resources::Resources,
     tiles::Tiles,
     time::Time,
@@ -30,6 +31,7 @@ pub struct Model {
     //float_flags: FloatFlags,
     tiles: Tiles,
     buttons: Buttons,
+    player: Player,
 }
 
 #[derive(Debug, Clone)]
@@ -53,6 +55,7 @@ impl Component for Model {
             //float_flags: FloatFlags::new(),
             tiles: Tiles::new(),
             buttons: Buttons::new(),
+            player: Player::new(),
         };
         Action::AddTile(0).perform(&mut ret);
         ret
@@ -89,8 +92,9 @@ impl Renderable<Model> for Model {
                 <div class="body",>
                   <span class="time",>{&format!("Time: {}", self.time)}</span>
                    <ResourceContainer: resources=&self.resource_values,/>
-                   <MapContainer: tiles=&self.tiles,/>
+
                    <ControlContainer: buttons=&self.buttons, onsignal=|msg| msg,/>
+                   <PlayerContainer: player=&self.player,/>
                 </div>
                 <MessagesContainer: messages=&self.messages,/>
             </div>
