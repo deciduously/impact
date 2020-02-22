@@ -16,14 +16,13 @@
     "dev": "run-s style watch:rs",
     "prod": "run-s build serve",
     "serve": "serve -p 8080 release/",
-    "style": "postcss scss/*.scss > css/impact.css",
+    "style": "postcss scss/*.scss > static/impact.css",
     "test": "echo \"Error: no tests!\" && exit 1",
     "watch:rs": "cargo web start --release"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
     "@babel/preset-env": "^7.8.4",
-    "@fullhuman/postcss-purgecss": "^2.0.6",
     "@rollup/plugin-wasm": "^3.0.0",
     "autoprefixer": "^9.7.4",
     "cssnano": "^4.1.10",
