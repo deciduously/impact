@@ -18,7 +18,7 @@ You can use stable rust and Emscripten/asmjs but do you really *want* to?
 ## Usage
 
 * `yarn clean` - Clean build artifacts.
-* `yarn start` - Start a development server on `localhost:8000` and watch for changes to either Rust or SCSS.
+* `yarn dev` - Start a development server on `localhost:8000` and watch for changes to either Rust or SCSS.
 * `yarn prod` - Build a production bundle at `release/` and serve on `localhost:8080`.
 
 Note - the `wasm32-unknown-unknown` target does not currently support debug builds, so the dev server runs a release build of the rust code.  For now, the only difference with with the production build is the JS minifier (negligible gain) and lack of hot reloading.

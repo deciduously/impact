@@ -55,8 +55,10 @@ impl Renderable<MapContainer> for MapContainer {
             // Tiles arent going to have controls of their own
             // Clean this out before doing anything else.
             html! {
-                <div class="tile-title",>{&format!("{}", tile)}</div>
-                <div class="tile-art",>{&tile.art}</div>
+                <>
+                    <div class="tile-title",>{&format!("{}", tile)}</div>
+                    <div class="tile-art",>{&tile.art}</div>
+                </>
             }
         };
         html! {
