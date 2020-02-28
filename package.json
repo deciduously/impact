@@ -1,3 +1,4 @@
+
 {
   "name": "impact",
   "version": "0.1.1",
@@ -7,22 +8,22 @@
   "author": "deciduously <github@deciduously.com>",
   "license": "MIT",
   "scripts": {
-    "build:rs": "cargo web deploy --release",
     "build:js": "rollup -c",
-    "build:copy": "cp target/deploy/impact.css release/ && cp target/deploy/impact.wasm release/ && cp target/deploy/index.html release/ && cp target/deploy/favicon.ico release/",
-    "build": "run-s clean:deploy build:rs build:js build:copy",
-    "clean": "cargo clean",
-    "clean:deploy": "rm -rf release/",
-    "dev": "run-s style watch:rs",
+    "build:rs": "cargo web deploy --release",
+    "build:scss": "node-sass --include-path scss scss/impact.scss css/impact.css",
+    "build:css": "postcss --use autoprefixer -o static/impact.css css/impact.css",
+    "build:style": "run-s build:scss build:css",
+    "build:copy": "cp css/impact.css release/ && cp target/deploy/impact.wasm release/ && cp target/deploy/index.html release/ && cp target/deploy/favicon.ico release/",
+    "build": "run-s clean:deploy build:rs build:js build:style build:copy",
+    "clean:deploy": "rm -rf /release",
     "prod": "run-s build serve",
-    "serve": "serve -p 8080 release/",
-    "style": "postcss scss/*.scss > static/impact.css",
-    "test": "echo \"Error: no tests!\" && exit 1",
-    "watch:rs": "cargo web start --release"
+    "serve": "serve -p 8080 release",
+    "watch:rs": "cargo web start --release",
+    "test": "echo \"Error: no tests!\" && exit 1"
   },
   "devDependencies": {
-    "@babel/core": "^7.8.4",
-    "@babel/preset-env": "^7.8.4",
+    "@babel/core": "^7.8.6",
+    "@babel/preset-env": "^7.8.6",
     "@rollup/plugin-wasm": "^3.0.0",
     "autoprefixer": "^9.7.4",
     "cssnano": "^4.1.10",
@@ -33,7 +34,7 @@
     "postcss-scss": "^2.0.0",
     "rollup": "^1.31.1",
     "rollup-plugin-babel": "^4.3.3",
-    "rollup-plugin-postcss": "^2.0.6",
+    "rollup-plugin-postcss": "^2.1.1",
     "rollup-plugin-uglify": "^6.0.4",
     "serve": "^11.3.0"
   }
