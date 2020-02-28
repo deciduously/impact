@@ -9,18 +9,16 @@ Play the first thrilling 30 seconds [here](http://deciduously.com/impact).
 
 ## Requirements
 
-* [Rust](https://www.rust-lang.org/en-US/) nightly 1.27.0+ with the `wasm32-unknown-unknown` target.
+* [Rust](https://www.rust-lang.org/en-US/) 2018 with the `wasm32-unknown-unknown` target.
 * [cargo-web](https://github.com/koute/cargo-web)
-* [yarn](https://yarnpkg.com/)
+* [NPM/Node](https://nodejs.org/en/download/)
 
 You can use stable rust and Emscripten/asmjs but do you really *want* to?
-
-Note, `yarn` is only required because I've directly referenced it in the `watch:scss` and `watch:css` build scripts.  You can swap these to be `npm` appropriate if you prefer.  Heathen.
 
 ## Usage
 
 * `yarn clean` - Clean build artifacts.
-* `yarn start` - Start a development server on `localhost:8000` and watch for changes to either Rust or SCSS.
+* `yarn dev` - Start a development server on `localhost:8000` and watch for changes to either Rust or SCSS.
 * `yarn prod` - Build a production bundle at `release/` and serve on `localhost:8080`.
 
 Note - the `wasm32-unknown-unknown` target does not currently support debug builds, so the dev server runs a release build of the rust code.  For now, the only difference with with the production build is the JS minifier (negligible gain) and lack of hot reloading.
