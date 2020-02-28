@@ -1,0 +1,67 @@
+.impact {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%; }
+  .impact .container {
+    border: solid 1px #000;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; }
+    .impact .container > .title {
+      border-bottom: solid 1px #000;
+      font-weight: bold;
+      text-align: center; }
+    .impact .container > .scroller {
+      overflow: auto; }
+  .impact .header {
+    border-bottom: solid 1px #000;
+    flex: 0;
+    font-size: 72px;
+    font-weight: bold;
+    text-align: center; }
+  .impact .body {
+    display: flex;
+    flex: 1;
+    flex-direction: row; }
+    .impact .body .time {
+      flex: 0;
+      border-bottom: solid 1px #000;
+      font-size: 14px; }
+  .impact .container-resources {
+    flex: 0 0 256px;
+    order: 0; }
+    .impact .container-resources .resource {
+      border: dashed 1px #000;
+      display: flex;
+      flex: 0;
+      flex-direction: row; }
+    .impact .container-resources .resource-title {
+      display: flex;
+      flex: 2;
+      font-weight: bold;
+      width: 50%; }
+    .impact .container-resources .resource-amt {
+      display: flex;
+      flex: 1;
+      font-style: italic;
+      padding-left: 8px; }
+    .impact .container-resources .resource-delta {
+      display: flex;
+      flex: 1;
+      font-style: italic;
+      padding-left: 2px; }
+  .impact .container-control {
+    flex: 0 0 256px; }
+    .impact .container-control .control-button {
+      flex: 1; }
+  .impact .container-map {
+    flex: 1 0 256px;
+    order: 1; }
+  .impact .container-messages {
+    flex: 0 0 192px; }
+    .impact .container-messages .message-time {
+      border-bottom: solid 1px #000;
+      flex: 0;
+      font-weight: bold;
+      text-align: center; }
